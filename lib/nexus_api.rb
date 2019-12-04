@@ -15,7 +15,7 @@ module NexusAPI
     attr_accessor :docker
     attr_accessor :team_config
 
-    TEAM_CONFIG = 'team_configs/default.yaml'.freeze
+    TEAM_CONFIG = File.join(File.dirname(__dir__), 'team_configs/default.yaml').freeze
 
     def initialize(username:, password:, hostname:, docker_pull_hostname: nil, docker_push_hostname: nil, team_config: nil)
       @connection = NexusAPI::NexusConnection.new(
