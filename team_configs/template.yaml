@@ -1,0 +1,18 @@
+# Default set of repos for nexus_api to use
+#
+# NOTE: If you don't want to set a default for a certain
+#       case simply remove it from your config
+
+# Default repository for Nexus actions
+assets:     default_assets_repo
+components: default_components_repo
+search:     default_search_repo
+tag:        default_tag_repo
+
+# Default repository for file uploads
+maven:      default_maven_repo
+npm:        default_npm_repo
+pypi:       default_pypi_repo
+raw:        default_raw_repo
+rubygems:   default_rubygems_repo
+yum:        default_yum_repo

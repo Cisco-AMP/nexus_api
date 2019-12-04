@@ -1,0 +1,6 @@
+require 'nexus_api/cli_commands/download.rb'
+require 'nexus_api/cli_commands/list.rb'
+require 'nexus_api/cli_commands/script.rb'
+require 'nexus_api/cli_commands/search.rb'
+require 'nexus_api/cli_commands/tag.rb'
+require 'nexus_api/cli_commands/upload.rb'
