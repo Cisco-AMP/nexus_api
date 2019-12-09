@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = NexusAPI::VERSION
   spec.date          = %q{2019-12-04}
   spec.authors       = ['Francis Levesque', 'Gavin Miller']
-  spec.email         = ['francis.d.levesque@gmail.com']
+  spec.email         = ['francis.d.levesque@gmail.com', 'me@gavinmiller.io']
 
   spec.summary       = %q{nexus_api: provides access to Nexus through ruby!}
   spec.homepage      = "https://github.com/Cisco-AMP/nexus_api"
