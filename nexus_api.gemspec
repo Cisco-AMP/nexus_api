@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Francis Levesque', 'Gavin Miller']
   spec.email         = ['francis.d.levesque@gmail.com', 'me@gavinmiller.io']
 
-  spec.summary       = %q{nexus_api: provides access to Nexus through ruby!}
+  spec.summary       = %q{Provides API access to Sonatype Nexus through ruby!}
   spec.homepage      = "https://github.com/Cisco-AMP/nexus_api"
   spec.license       = 'MIT'
 
