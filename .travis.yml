@@ -1,6 +1,6 @@
 lang: ruby
 
-script: bundle install
+before_install:
+    - gem install bundler
+    
 script: bundle exec rspec
-
-rvm: 2.2
