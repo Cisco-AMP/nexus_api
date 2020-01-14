@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rake test
+bundle exec rake test
