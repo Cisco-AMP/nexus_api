@@ -172,7 +172,7 @@ api.get_asset_size(asset_url: URL)
 
 
 ## Development
-After checking out the repo, run `bin/setup` to install dependencies. Then, run bin/test` to run the tests.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/test` to run the tests.
 
 To install this gem onto your local machine, run `bin/install`. To release a new version, update the version number in `version.rb`, and then run `bin/release`, which will create a git tag for the version, push git commits and tags.
 
