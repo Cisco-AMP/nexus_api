@@ -1,6 +1,7 @@
 require 'thor'
 require 'nexus_api/cli_utils'
 require 'nexus_api/cli_commands/commands'
+require 'nexus_api/version'
 
 module NexusAPI
   class CLI < ::Thor
@@ -25,5 +26,11 @@ module NexusAPI
 
     desc 'upload FORMAT', 'Upload a FORMAT type file'
     subcommand 'upload', Upload
+
+    map %w[--version -v] => :version
+    desc 'version, --version, -v', 'Prints out current gem version'
+    def version
+      puts NexusAPI::VERSION
+    end
   end
 end
