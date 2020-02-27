@@ -27,7 +27,7 @@ module NexusAPI
           )
           break unless @api.paginate?
         end
-      end
+      end.select { |result| result['path'].include?(options[:name]) }
       puts options[:full] ? results : results.map { |result| result['path'] }
     end
   end

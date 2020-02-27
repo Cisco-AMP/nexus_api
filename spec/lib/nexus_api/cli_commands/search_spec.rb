@@ -61,5 +61,22 @@ RSpec.describe NexusAPI::Search do
       @search.options = flags
       expect { @search.asset }.to output("{\"path\"=>\"search_name\"}\n").to_stdout
     end
+
+    it 'outputs only assets that contain the search name' do
+      bad_match_list = [
+        { "path" => 'not_a_match' },
+        { "path" => 'search_name' },
+        { "path" => 'search' },
+        { "path" => 'name' },
+        { "path" => 'a_search_name_to_find' },
+        { "path" => 'search_for_a_name' },
+      ]
+      expect(@search.api).to receive(:search_asset).and_return(bad_match_list)
+      flags = {
+        :name => 'search_name',
+      }
+      @search.options = flags
+      expect { @search.asset }.to output("search_name\na_search_name_to_find\n").to_stdout
+    end
   end
 end
