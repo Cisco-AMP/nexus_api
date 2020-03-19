@@ -2,6 +2,8 @@ require 'nexus_api/nexus_connection'
 
 RSpec.describe NexusAPI::NexusConnection do
   let(:endpoint) { 'endpoint' }
+  let(:raw_endpoint) { "!#3?/9.9.9-${val}.%^P&*" }
+  let(:escaped_endpoint) { URI.escape(raw_endpoint) }
   let(:custom_header) { {'header' => 'value'} }
 
   let(:connection) do
@@ -49,6 +51,15 @@ RSpec.describe NexusAPI::NexusConnection do
       expect(connection).to receive(:jsonize).and_return(body)
       expect(connection.get_response(endpoint: endpoint)).to eq(body)
     end
+
+    it 'safely escapes special characters in the URL' do
+      arguments = nil
+      expect(RestClient::Request).to receive(:execute) do |args|
+        arguments = args
+      end.and_return(nil)
+      connection.get_response(endpoint: raw_endpoint)
+      expect(arguments[:url]).to include(escaped_endpoint)
+    end
   end
 
   describe '#get' do
@@ -75,6 +86,15 @@ RSpec.describe NexusAPI::NexusConnection do
     it 'uses headers when specified' do
       expect(connection).to receive(:send_get).with(anything, boolean, custom_header)
       connection.get(endpoint: endpoint, headers: custom_header)
+    end
+
+    it 'safely escapes special characters in the URL' do
+      arguments = nil
+      expect(RestClient::Request).to receive(:execute) do |args|
+        arguments = args
+      end.and_return(nil)
+      connection.get(endpoint: raw_endpoint)
+      expect(arguments[:url]).to include(escaped_endpoint)
     end
   end
 
@@ -104,6 +124,15 @@ RSpec.describe NexusAPI::NexusConnection do
       expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: custom_header)
       connection.post(endpoint: endpoint, headers: custom_header)
     end
+
+    it 'safely escapes special characters in the URL' do
+      arguments = nil
+      expect(RestClient::Request).to receive(:execute) do |args|
+        arguments = args
+      end.and_return(nil)
+      connection.post(endpoint: raw_endpoint)
+      expect(arguments[:url]).to include(escaped_endpoint)
+    end
   end
 
   describe '#put' do
@@ -132,6 +161,15 @@ RSpec.describe NexusAPI::NexusConnection do
       expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: custom_header)
       connection.put(endpoint: endpoint, headers: custom_header)
     end
+
+    it 'safely escapes special characters in the URL' do
+      arguments = nil
+      expect(RestClient::Request).to receive(:execute) do |args|
+        arguments = args
+      end.and_return(nil)
+      connection.put(endpoint: raw_endpoint)
+      expect(arguments[:url]).to include(escaped_endpoint)
+    end
   end
 
   describe '#delete' do
@@ -149,6 +187,15 @@ RSpec.describe NexusAPI::NexusConnection do
       expect(connection).to receive(:send_request).with(anything, anything, headers: custom_header)
       connection.delete(endpoint: endpoint, headers: custom_header)
     end
+
+    it 'safely escapes special characters in the URL' do
+      arguments = nil
+      expect(RestClient::Request).to receive(:execute) do |args|
+        arguments = args
+      end.and_return(nil)
+      connection.delete(endpoint: raw_endpoint)
+      expect(arguments[:url]).to include(escaped_endpoint)
+    end
   end
 
   describe '#head' do
@@ -156,11 +203,16 @@ RSpec.describe NexusAPI::NexusConnection do
       expect(RestClient).to receive(:head).with(endpoint)
       connection.head(asset_url: endpoint)
     end
+
+    it 'safely escapes special characters in the URL' do
+      expect(RestClient).to receive(:head).with(escaped_endpoint)
+      connection.head(asset_url: raw_endpoint)
+    end
   end
 
   describe '#content_length' do
     it 'sends :head with an asset url to an instance of Nexus Connection' do
-      expect(connection).to receive(:head).with(asset_url: 'endpoint')
+      expect(connection).to receive(:head).with(asset_url: endpoint)
       connection.content_length(asset_url: endpoint)
     end
 
@@ -182,6 +234,11 @@ RSpec.describe NexusAPI::NexusConnection do
     it 'sends :get with url and authorization header to RestClient' do
       expect(RestClient).to receive(:get).with(endpoint, instance_of(Hash))
       connection.download(url: endpoint)
+    end
+
+    it 'safely escapes special characters in the URL' do
+      expect(RestClient).to receive(:get).with(escaped_endpoint, instance_of(Hash))
+      connection.download(url: raw_endpoint)
     end
   end
 
