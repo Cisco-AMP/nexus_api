@@ -1,5 +1,6 @@
 require 'base64'
 require 'rest-client'
+require 'uri'
 
 module NexusAPI
   class NexusConnection
@@ -53,7 +54,7 @@ module NexusAPI
 
     def head(asset_url:)
       catch_connection_error do
-        RestClient.head(asset_url)
+        RestClient.head(URI.escape(asset_url))
       end
     end
 
@@ -65,7 +66,7 @@ module NexusAPI
 
     def download(url:)
       catch_connection_error do
-        RestClient.get(url, authorization_header)
+        RestClient.get(URI.escape(url), authorization_header)
       end
     end
 
@@ -103,10 +104,11 @@ module NexusAPI
     end
 
     def send_request(connection_method, endpoint, parameters: '', headers: {})
+      url = "https://#{@hostname}/service/rest/v1/#{endpoint}"
       catch_connection_error do
         RestClient::Request.execute(
-          method: connection_method,
-          url:    "https://#{@hostname}/service/rest/v1/#{endpoint}",
+          method:  connection_method,
+          url:     URI.escape(url),
           payload: parameters,
           headers: authorization_header.merge(headers)
         )

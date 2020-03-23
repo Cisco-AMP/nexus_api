@@ -1,7 +1,10 @@
 require 'nexus_api'
 require 'bundler/setup'
 require 'pry'
+require 'simplecov'
 require 'thor'
+
+SimpleCov.start
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
