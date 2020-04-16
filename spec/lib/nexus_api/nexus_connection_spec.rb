@@ -16,7 +16,7 @@ RSpec.describe NexusAPI::NexusConnection do
 
   describe '#get_response' do
     it 'sends :send_get with the specified endpoint' do
-      expect(connection).to receive(:send_get).with(endpoint, boolean, instance_of(Hash)).and_return(nil)
+      expect(connection).to receive(:send_get).with(endpoint, boolean, instance_of(Hash), String).and_return(nil)
       connection.get_response(endpoint: endpoint)
     end
 
@@ -31,12 +31,12 @@ RSpec.describe NexusAPI::NexusConnection do
     end
 
     it 'uses JSON as a content type by default' do
-      expect(connection).to receive(:send_get).with(anything, boolean, {'Content-Type' => 'application/json'}).and_return(nil)
+      expect(connection).to receive(:send_get).with(anything, boolean, {'Content-Type' => 'application/json'}, String).and_return(nil)
       connection.get_response(endpoint: endpoint)
     end
 
     it 'uses headers when specified' do
-      expect(connection).to receive(:send_get).with(anything, boolean, custom_header).and_return(nil)
+      expect(connection).to receive(:send_get).with(anything, boolean, custom_header, String).and_return(nil)
       connection.get_response(endpoint: endpoint, headers: custom_header)
     end
 
@@ -64,7 +64,7 @@ RSpec.describe NexusAPI::NexusConnection do
 
   describe '#get' do
     it 'sends :send_get with the specified endpoint' do
-      expect(connection).to receive(:send_get).with(endpoint, boolean, instance_of(Hash))
+      expect(connection).to receive(:send_get).with(endpoint, boolean, instance_of(Hash), String)
       connection.get(endpoint: endpoint)
     end
 
@@ -79,12 +79,12 @@ RSpec.describe NexusAPI::NexusConnection do
     end
 
     it 'uses JSON as a content type by default' do
-      expect(connection).to receive(:send_get).with(anything, boolean, {'Content-Type' => 'application/json'})
+      expect(connection).to receive(:send_get).with(anything, boolean, {'Content-Type' => 'application/json'}, String)
       connection.get(endpoint: endpoint)
     end
 
     it 'uses headers when specified' do
-      expect(connection).to receive(:send_get).with(anything, boolean, custom_header)
+      expect(connection).to receive(:send_get).with(anything, boolean, custom_header, String)
       connection.get(endpoint: endpoint, headers: custom_header)
     end
 
@@ -100,28 +100,28 @@ RSpec.describe NexusAPI::NexusConnection do
 
   describe '#post' do
     it 'sends :send_request with post to the specified endpoint' do
-      expect(connection).to receive(:send_request).with(:post, endpoint, parameters: anything, headers: anything)
+      expect(connection).to receive(:send_request).with(:post, endpoint, parameters: anything, headers: anything, api_version: anything)
       connection.post(endpoint: endpoint)
     end
 
     it 'uses a blank parameter by default' do
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: '', headers: anything)
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: '', headers: anything, api_version: anything)
       connection.post(endpoint: endpoint)
     end
 
     it 'uses the specified parameter list' do
       parameters = 'test_parameter'
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: parameters, headers: anything)
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: parameters, headers: anything, api_version: anything)
       connection.post(endpoint: endpoint, parameters: parameters)
     end
 
     it 'uses JSON as a content type by default' do
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: {'Content-Type' => 'application/json'})
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: {'Content-Type' => 'application/json'}, api_version: anything)
       connection.post(endpoint: endpoint)
     end
 
     it 'uses headers when specified' do
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: custom_header)
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: custom_header, api_version: anything)
       connection.post(endpoint: endpoint, headers: custom_header)
     end
 
@@ -137,28 +137,28 @@ RSpec.describe NexusAPI::NexusConnection do
 
   describe '#put' do
     it 'sends :send_request with put to the specified endpoint' do
-      expect(connection).to receive(:send_request).with(:put, endpoint, parameters: anything, headers: anything)
+      expect(connection).to receive(:send_request).with(:put, endpoint, parameters: anything, headers: anything, api_version: anything)
       connection.put(endpoint: endpoint)
     end
 
     it 'uses a blank parameter by default' do
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: '', headers: anything)
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: '', headers: anything, api_version: anything)
       connection.put(endpoint: endpoint)
     end
 
     it 'uses the specified parameter list' do
       parameters = 'test_parameter'
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: parameters, headers: anything)
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: parameters, headers: anything, api_version: anything)
       connection.put(endpoint: endpoint, parameters: parameters)
     end
 
     it 'uses JSON as a content type by default' do
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: {'Content-Type' => 'application/json'})
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: {'Content-Type' => 'application/json'}, api_version: anything)
       connection.put(endpoint: endpoint)
     end
 
     it 'uses headers when specified' do
-      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: custom_header)
+      expect(connection).to receive(:send_request).with(anything, anything, parameters: anything, headers: custom_header, api_version: anything)
       connection.put(endpoint: endpoint, headers: custom_header)
     end
 
@@ -174,17 +174,17 @@ RSpec.describe NexusAPI::NexusConnection do
 
   describe '#delete' do
     it 'sends :send_request with delete to the specified endpoint' do
-      expect(connection).to receive(:send_request).with(:delete, endpoint, headers: anything)
+      expect(connection).to receive(:send_request).with(:delete, endpoint, headers: anything, api_version: anything)
       connection.delete(endpoint: endpoint)
     end
 
     it 'uses JSON as a content type by default' do
-      expect(connection).to receive(:send_request).with(anything, anything, headers: {'Content-Type' => 'application/json'})
+      expect(connection).to receive(:send_request).with(anything, anything, headers: {'Content-Type' => 'application/json'}, api_version: anything)
       connection.delete(endpoint: endpoint)
     end
 
     it 'uses headers when specified' do
-      expect(connection).to receive(:send_request).with(anything, anything, headers: custom_header)
+      expect(connection).to receive(:send_request).with(anything, anything, headers: custom_header, api_version: anything)
       connection.delete(endpoint: endpoint, headers: custom_header)
     end
 

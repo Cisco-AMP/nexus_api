@@ -4,7 +4,6 @@ require 'nexus_api/docker_shell'
 require 'nexus_api/docker_manager'
 require 'nexus_api/nexus_connection'
 require 'nexus_api/config_manager'
-require 'json'
 require 'pry'
 
 # Nexus API docs: 

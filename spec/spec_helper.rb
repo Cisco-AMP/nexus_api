@@ -3,6 +3,12 @@ require 'bundler/setup'
 require 'pry'
 require 'simplecov'
 require 'thor'
+require 'webmock/rspec'
+
+HOSTNAME = 'nexus_hostname'
+BASE_URL = "https://#{HOSTNAME}/service/rest"
+DOCKER_PULL_HOSTNAME = 'docker_pull'
+DOCKER_PUSH_HOSTNAME = 'docker_push'
 
 SimpleCov.start
 

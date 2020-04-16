@@ -1,10 +1,11 @@
 require 'base64'
+require 'json'
 require 'rest-client'
 require 'uri'
 
 module NexusAPI
   class NexusConnection
-    VALID_RESPONSE_CODES = [200, 204].freeze
+    VALID_RESPONSE_CODES = [200, 201, 204].freeze
     
     attr_accessor :continuation_token
 
@@ -14,40 +15,43 @@ module NexusAPI
       @hostname = hostname
     end
 
-    def get_response(endpoint:, paginate: false, headers: {'Content-Type' => 'application/json'})
-      response = send_get(endpoint, paginate, headers)
+    def get_response(endpoint:, paginate: false, headers: {'Content-Type' => 'application/json'}, api_version: 'v1')
+      response = send_get(endpoint, paginate, headers, api_version)
       response.nil? ? Hash.new : jsonize(response)
     end
 
-    def get(endpoint:, paginate: false, headers: {'Content-Type' => 'application/json'})
-      valid?(send_get(endpoint, paginate, headers))
+    def get(endpoint:, paginate: false, headers: {'Content-Type' => 'application/json'}, api_version: 'v1')
+      valid?(send_get(endpoint, paginate, headers, api_version))
     end
 
-    def post(endpoint:, parameters: '', headers: {'Content-Type' => 'application/json'})
+    def post(endpoint:, parameters: '', headers: {'Content-Type' => 'application/json'}, api_version: 'v1')
       response = send_request(
         :post, 
         endpoint,
         parameters: parameters,
-        headers: headers
+        headers: headers,
+        api_version: api_version
       )
       valid?(response)
     end
 
-    def put(endpoint:, parameters: '', headers: {'Content-Type' => 'application/json'})
+    def put(endpoint:, parameters: '', headers: {'Content-Type' => 'application/json'}, api_version: 'v1')
       response = send_request(
         :put,
         endpoint,
         parameters: parameters,
-        headers: headers
+        headers: headers,
+        api_version: api_version
       )
       valid?(response)
     end
 
-    def delete(endpoint:, headers: {'Content-Type' => 'application/json'})
+    def delete(endpoint:, headers: {'Content-Type' => 'application/json'}, api_version: 'v1')
       response = send_request(
         :delete,
         endpoint,
-        headers: headers
+        headers: headers,
+        api_version: api_version
       )
       valid?(response)
     end
@@ -103,8 +107,8 @@ module NexusAPI
       { :Authorization => 'Basic ' + Base64.strict_encode64( "#{@username}:#{@password}" ) }
     end
 
-    def send_request(connection_method, endpoint, parameters: '', headers: {})
-      url = "https://#{@hostname}/service/rest/v1/#{endpoint}"
+    def send_request(connection_method, endpoint, parameters: '', headers: {}, api_version: 'v1')
+      url = "https://#{@hostname}/service/rest/#{api_version}/#{endpoint}"
       catch_connection_error do
         RestClient::Request.execute(
           method:  connection_method,
@@ -115,14 +119,15 @@ module NexusAPI
       end
     end
 
-    def send_get(endpoint, paginate, headers)
+    def send_get(endpoint, paginate, headers, api_version)
       # paginate answers is the user requesting pagination, paginate? answers does a continuation token exist
       # if an empty continuation token is included in the request we'll get an ArrayIndexOutOfBoundsException
       endpoint += "&continuationToken=#{@continuation_token}" if paginate && paginate?
       response = send_request(
         :get,
         endpoint,
-        headers: headers
+        headers: headers,
+        api_version: api_version
       )
     end
 
