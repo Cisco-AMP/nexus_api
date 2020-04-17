@@ -3,9 +3,9 @@ RSpec.shared_context 'setup NexusAPI::API' do
     NexusAPI::API.new(
       username: 'username',
       password: 'password',
-      hostname: 'nexus_hostname',
-      docker_pull_hostname: 'docker_pull',
-      docker_push_hostname: 'docker_push',
+      hostname: HOSTNAME,
+      docker_pull_hostname: DOCKER_PULL_HOSTNAME,
+      docker_push_hostname: DOCKER_PUSH_HOSTNAME,
     )
   end
 end
