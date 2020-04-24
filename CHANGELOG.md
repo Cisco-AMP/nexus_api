@@ -5,7 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.1.0](https://github.com/Cisco-AMP/nexus_api/compare/v1.0.4...v1.1.0) - 2020-04-20
+## [1.2.0](https://github.com/Cisco-AMP/nexus_api/compare/v1.1.0...v1.2.0) - 2020-04-24
+### Added
+- `move_components_to` method for moving all components that match a given tag into a new destination
+- `bin/nexus_api move` to the CLI for moving components
+
+
+## [1.1.0](https://github.com/Cisco-AMP/nexus_api/compare/v1.0.4...v1.1.0) - 2020-04-17
 ### Changed
 - `list_repositories` to use the new `beta` API version which returns richer content than the old `v1` version
 
