@@ -5,10 +5,10 @@ A ruby gem that wraps the [Sonatype Nexus Repository Manager 3](https://help.son
 ## Latest Version Tested
 Title | Value
 ---|---
-**Version** | `3.18.1-01`
+**Version** | `3.22.0-02`
 **Edition** | `PRO`
-**Build Revision** | `72e5414c4f3fb232e32cbfc9fca740111c94d07f`
-**Build Timestamp** | `2019-08-06-1749-11540`
+**Build Revision** | `140e045ce3cdd3f35e6f9d13127d7299d21f7251`
+**Build Timestamp** | `2020-03-27-1616-27700`
 
 
 ## Installation
@@ -45,7 +45,7 @@ bin/nexus_api
 
 
 ### Using the Class
-Documentation is never perfect. Use this section as a reference, but [lib/nexus_api.rb](lib/nexus_api.rb) should be regarded as the source of truth.
+Documentation is never perfect. Use this section as a reference, but [lib/nexus_api.rb](lib/nexus_api.rb) and [lib/endpoints](lib/endpoints) should be regarded as the source of truth.
 
 
 ```ruby
@@ -97,6 +97,9 @@ set = Array.new.tap do |set|
     break unless api.paginate?
   end
 end
+
+# You can move all components that are tagged to a new destination
+api.move_components_to(destination: DESTINATION, tag: TAG)
 
 # You can download an asset by using its asset_id
 # Optionally, you can rename the file on download
@@ -155,12 +158,6 @@ api.create_tag(name: TAG)
 api.associate_tag(name: TAG, sha1: SHA1_SUM, repository: REPOSITORY_NAME)
 api.delete_associated_tag(name: TAG, sha1: SHA1_SUM, repository: REPOSITORY_NAME)
 api.delete_tag(name: TAG)
-
-# You can upload, list, run, and delete custom Nexus scripts
-api.upload_script(filename: LOCAL_FILENAME)
-api.list_scripts
-api.run_script(name: SCRIPT_NAME)
-api.delete_script(name: SCRIPT_NAME)
 
 # You can query the Nexus status
 api.status
