@@ -15,6 +15,9 @@ module NexusAPI
     desc 'list TYPE', 'Print a list of every item in Nexus that matches TYPE'
     subcommand 'list', List
 
+    desc 'move TYPE', 'Move items to new location in Nexus'
+    subcommand 'move', Move
+
     desc 'script COMMAND', 'Manipulate scripts in Nexus'
     subcommand 'script', Script
 
@@ -31,6 +34,10 @@ module NexusAPI
     desc 'version, --version, -v', 'Prints out current gem version'
     def version
       puts NexusAPI::VERSION
+    end
+
+    def self.exit_on_failure?
+      true
     end
   end
 end
