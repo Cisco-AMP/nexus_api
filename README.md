@@ -45,7 +45,7 @@ bin/nexus_api
 
 
 ### Using the Class
-Documentation is never perfect. Use this section as a reference, but [lib/nexus_api.rb](lib/nexus_api.rb) and [lib/endpoints/\*.rb](lib/endpoints/\*.rb) should be regarded as the source of truth.
+Documentation is never perfect. Use this section as a reference, but [lib/nexus_api.rb](lib/nexus_api.rb) and [lib/endpoints](lib/endpoints) should be regarded as the source of truth.
 
 
 ```ruby
