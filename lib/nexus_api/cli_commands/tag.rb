@@ -31,7 +31,7 @@ module NexusAPI
     desc 'list', 'Prints out a list of all tags'
     option :full, :aliases => '-f', :desc => 'Print full JSON output'
     def list
-      print_set(action: :list_tags, filter: 'name')
+      print_paginating_set(action: :list_tags, params: {}, filter: 'name')
     end
 
     desc 'remove', 'Removes a tag from an asset'

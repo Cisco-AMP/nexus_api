@@ -100,6 +100,7 @@ RSpec.describe NexusAPI::Tag do
     describe 'with mock tags' do
       let(:tags) { [{'name' => 'tag1'}] }
       before(:each) {
+        expect(@tag.api).to receive(:paginate?).and_return(false)
         expect(@tag.api).to receive(:list_tags).and_return(tags)
       }
 
@@ -119,7 +120,8 @@ RSpec.describe NexusAPI::Tag do
     end
 
     it 'passes the flags set in Thor correctly to api' do
-      expect(@tag.api).to receive(:list_tags).with(no_args)
+      expect(@tag.api).to receive(:paginate?).and_return(false)
+      expect(@tag.api).to receive(:list_tags).with({:paginate=>true})
       flags = { :full => true }
       @tag.options = flags
       @tag.list
