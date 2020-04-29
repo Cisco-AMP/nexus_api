@@ -2,15 +2,17 @@ require 'nexus_api/nexus_connection'
 
 RSpec.describe NexusAPI::NexusConnection do
   let(:endpoint) { 'endpoint' }
+  let(:endpoint_with_arg) { 'endpoint?arg=first' }
   let(:raw_endpoint) { "!#3?/9.9.9-${val}.%^P&*" }
   let(:escaped_endpoint) { URI.escape(raw_endpoint) }
   let(:custom_header) { {'header' => 'value'} }
+  let(:token) { 'token' }
 
   let(:connection) do
     NexusAPI::NexusConnection.new(
       username: 'username',
       password: 'password',
-      hostname: 'hostname',
+      hostname: HOSTNAME,
     )
   end
 
@@ -59,6 +61,24 @@ RSpec.describe NexusAPI::NexusConnection do
       end.and_return(nil)
       connection.get_response(endpoint: raw_endpoint)
       expect(arguments[:url]).to include(escaped_endpoint)
+    end
+
+    it 'correctly adds a query to the URL' do
+      connection.continuation_token = token
+      url = "#{BASE_URL}/v1/#{endpoint}?continuationToken=#{token}"
+      stub_request(:get, url)
+        .with(headers: { 'Content-Type'=>'application/json' })
+      connection.get_response(endpoint: endpoint, paginate: true)
+      expect(a_request(:get, url)).to have_been_made
+    end
+
+    it 'correctly adds multiple queries to the URL' do
+      connection.continuation_token = token
+      url = "#{BASE_URL}/v1/#{endpoint_with_arg}&continuationToken=#{token}"
+      stub_request(:get, url)
+        .with(headers: { 'Content-Type'=>'application/json' })
+      connection.get_response(endpoint: endpoint_with_arg, paginate: true)
+      expect(a_request(:get, url)).to have_been_made
     end
   end
 

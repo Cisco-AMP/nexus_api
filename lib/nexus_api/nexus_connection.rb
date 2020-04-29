@@ -120,9 +120,10 @@ module NexusAPI
     end
 
     def send_get(endpoint, paginate, headers, api_version)
+      url_marker = endpoint.include?('?') ? '&' : '?'
       # paginate answers is the user requesting pagination, paginate? answers does a continuation token exist
       # if an empty continuation token is included in the request we'll get an ArrayIndexOutOfBoundsException
-      endpoint += "&continuationToken=#{@continuation_token}" if paginate && paginate?
+      endpoint += "#{url_marker}continuationToken=#{@continuation_token}" if paginate && paginate?
       response = send_request(
         :get,
         endpoint,
