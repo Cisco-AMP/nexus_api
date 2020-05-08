@@ -88,7 +88,11 @@ module NexusAPI
 
     def handle(error)
       puts "ERROR: Request failed"
-      puts error.description if error.is_a?(RestClient::Response)
+      if error.is_a?(RestClient::Response)
+        puts error.description
+      else
+        puts error.to_s
+      end
     end
 
     def catch_connection_error
@@ -98,8 +102,12 @@ module NexusAPI
         return handle(error)
       rescue RestClient::Unauthorized => error
         return handle(error)
+      rescue RestClient::Exceptions::ReadTimeout => error
+        return handle(error)
       rescue RestClient::ExceptionWithResponse => error
         return handle(error.response)
+      rescue StandardError => error
+        return handle(error)
       end
     end
 
@@ -124,7 +132,7 @@ module NexusAPI
       # paginate answers is the user requesting pagination, paginate? answers does a continuation token exist
       # if an empty continuation token is included in the request we'll get an ArrayIndexOutOfBoundsException
       endpoint += "#{url_marker}continuationToken=#{@continuation_token}" if paginate && paginate?
-      response = send_request(
+      send_request(
         :get,
         endpoint,
         headers: headers,

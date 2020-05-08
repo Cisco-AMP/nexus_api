@@ -15,8 +15,8 @@ module NexusAPI
       return false unless docker_valid?
       image_name = image_name(@pull_host, image_name, tag)
       begin
-        image = @docker.pull_image(@username, @password, image_name)
-      rescue Docker::Error::NotFoundError => error
+        @docker.pull_image(@username, @password, image_name)
+      rescue Docker::Error::NotFoundError
         puts "ERROR: Failed to pull Docker image #{image_name}.\nDoes it exist in Nexus?"
         return false
       end
