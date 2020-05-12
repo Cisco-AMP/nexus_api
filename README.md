@@ -59,8 +59,8 @@ api = NexusAPI::API.new(
   username: NEXUS_USERNAME,
   password: NEXUS_PASSWORD,
   hostname: NEXUS_HOSTNAME,
-  docker_pull_hostname: DOCKER_PUSH_HOSTNAME,  # Optional
-  docker_push_hostname: DOCKER_PULL_HOSTNAME,  # Optional
+  docker_pull_hostname: DOCKER_PULL_HOSTNAME,  # Optional
+  docker_push_hostname: DOCKER_PUSH_HOSTNAME,  # Optional
   config: "team_configs/#{CONFIG_NAME}",       # Optional
 )
 # NOTE: All Docker commands will fail if the docker hostnames are not initialized
