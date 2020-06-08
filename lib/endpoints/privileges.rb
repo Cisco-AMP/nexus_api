@@ -1,6 +1,10 @@
 module NexusAPI
   class API
     # GET /service/rest/beta/security/privileges
+    def list_privileges
+      @connection.get_response(endpoint: 'security/privileges', api_version: 'beta')
+    end
+
     # GET /service/rest/beta/security/privileges/{privilegeId}
     # DELETE /service/rest/beta/security/privileges/{privilegeId}
     # POST /service/rest/beta/security/privileges/application
