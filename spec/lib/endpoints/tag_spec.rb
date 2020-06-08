@@ -26,6 +26,16 @@ RSpec.describe NexusAPI do
         end
       end
 
+      describe '#list_all_tags' do
+        it 'paginates automatically' do
+          first_page = [1,2]
+          second_page = [3,4]
+          expect(api).to receive(:paginate?).and_return(true, false)
+          expect(api).to receive(:list_tags).and_return(first_page, second_page)
+          expect(api.list_all_tags).to eq(first_page + second_page)
+        end
+      end
+
       describe '#create_tag' do
         let(:name_parameter) { JSON.dump({'name' => tag}) }
 

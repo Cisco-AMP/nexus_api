@@ -5,12 +5,12 @@ RSpec.describe NexusAPI do
     include_context 'setup NexusAPI::API'
 
     let(:tag) { 'imatag' }
+    let(:repository) { 'repository' }
     let(:team_config) { double }
     before(:each) { api.team_config = team_config }
 
 
     describe '#list_components' do
-      let(:repository) { 'components_repo' }
       let(:url_params) { "components?repository=#{repository}" }
 
       it 'sends :get_response from components with a repository to the NexusConnection instance' do
@@ -44,6 +44,16 @@ RSpec.describe NexusAPI do
       it 'sends :get_response from components with pagination set to true to the NexusConnection instance' do
         expect(api.connection).to receive(:get_response).with(hash_including(paginate: true))
         api.list_components(repository: repository, paginate: true)
+      end
+    end
+
+    describe '#list_all_components' do
+      it 'paginates automatically' do
+        first_page = [1,2]
+        second_page = [3,4]
+        expect(api).to receive(:paginate?).and_return(true, false)
+        expect(api).to receive(:list_components).and_return(first_page, second_page)
+        expect(api.list_all_components(repository: repository)).to eq(first_page + second_page)
       end
     end
 

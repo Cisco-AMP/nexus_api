@@ -6,6 +6,15 @@ module NexusAPI
       @connection.get_response(endpoint: "assets?repository=#{repository}", paginate: paginate)
     end
 
+    def list_all_assets(repository: nil)
+      assets = Array.new.tap do |assets|
+        loop do
+          assets.concat(list_assets(repository: repository, paginate: true))
+          break unless paginate?
+        end
+      end
+    end
+
     # GET /service/rest/v1/assets/{id}
     def list_asset(id:)
       @connection.get_response(endpoint: "assets/#{id}")

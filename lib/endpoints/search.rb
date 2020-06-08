@@ -13,6 +13,23 @@ module NexusAPI
       @connection.get_response(endpoint: endpoint, paginate: paginate)
     end
 
+    def search_all_assets(name:, format: nil, repository: nil, sha1: nil, version: nil)
+      results = Array.new.tap do |results|
+        loop do
+          results.concat(
+            search_asset(
+              name: name,
+              format: format,
+              repository: repository,
+              sha1: sha1,
+              version: version,
+              paginate: true
+            ))
+          break unless paginate?
+        end
+      end
+    end
+
     # GET /service/rest/v1/search/assets/download
   end
 end
