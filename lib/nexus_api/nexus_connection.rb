@@ -116,6 +116,7 @@ module NexusAPI
     end
 
     def send_request(connection_method, endpoint, parameters: '', headers: {}, api_version: 'v1')
+      parameters = parameters.to_json if headers['Content-Type'] == 'application/json'
       url = "https://#{@hostname}/service/rest/#{api_version}/#{endpoint}"
       catch_connection_error do
         RestClient::Request.execute(

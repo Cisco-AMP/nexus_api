@@ -51,9 +51,19 @@ module NexusAPI
       print_paginating_set(action: :list_components, params: {repository: options[:repository]}, filter: 'name', proc: proc)
     end
 
+    desc 'privileges', 'Prints out a list of all privileges'
+    def privileges
+      print_set(action: :list_privileges, filter: 'name')
+    end
+
     desc 'repositories', 'Prints out a list of all repositories'
     def repositories
       print_set(action: :list_repositories, filter: 'name')
+    end
+
+    desc 'roles', 'Prints out a list of all roles'
+    def roles
+      print_set(action: :list_roles, filter: 'name')
     end
 
     desc 'status', 'Prints out if the Nexus server can respond to read and write requests'
@@ -61,6 +71,11 @@ module NexusAPI
       setup
       puts "Nexus can respond to read requests:  #{@api.status}"
       puts "Nexus can respond to write requests: #{@api.status_writable}"
+    end
+
+    desc 'users', 'Prints out a list of all users'
+    def users
+      print_set(action: :list_users, filter: 'emailAddress')
     end
   end
 end

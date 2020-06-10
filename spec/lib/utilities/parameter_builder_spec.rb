@@ -2,15 +2,15 @@ require 'utilities/parameter_builder'
 
 RSpec.shared_examples 'a base parameter set' do
   it 'configures a name' do
-    expect(JSON.parse(parameters)['name']).to eq(repo_name)
+    expect(parameters['name']).to eq(repo_name)
   end
 
   it 'uses an allow_once policy by default' do
-    expect(JSON.parse(parameters)['storage']['writePolicy']).to eq(allow_once)
+    expect(parameters['storage']['writePolicy']).to eq(allow_once)
   end
 
   it 'configures a write policy' do
-    expect(JSON.parse(overloaded_parameters)['storage']['writePolicy']).to eq(policy)
+    expect(overloaded_parameters['storage']['writePolicy']).to eq(policy)
   end
 end
 
@@ -33,7 +33,7 @@ RSpec.describe NexusAPI::ParameterBuilder do
 
     it 'configures an HTTPS port' do
       parameters = NexusAPI::ParameterBuilder.docker_hosted(repo_name, port)
-      expect(JSON.parse(parameters)['docker']['httpPort']).to eq(port)
+      expect(parameters['docker']['httpPort']).to eq(port)
     end
   end
 
@@ -50,21 +50,21 @@ RSpec.describe NexusAPI::ParameterBuilder do
     end
 
     it 'uses a release policy by default' do
-      expect(JSON.parse(@parameters)['maven']['versionPolicy']).to eq(release)
+      expect(@parameters['maven']['versionPolicy']).to eq(release)
     end
 
     it 'uses a strict policy by default' do
-      expect(JSON.parse(@parameters)['maven']['layoutPolicy']).to eq(strict)
+      expect(@parameters['maven']['layoutPolicy']).to eq(strict)
     end
 
     it 'configures a version policy' do
       parameters = NexusAPI::ParameterBuilder.maven_hosted(repo_name, version_policy: policy)
-      expect(JSON.parse(parameters)['maven']['versionPolicy']).to eq(policy)
+      expect(parameters['maven']['versionPolicy']).to eq(policy)
     end
 
     it 'configures a layout policy' do
       parameters = NexusAPI::ParameterBuilder.maven_hosted(repo_name, layout_policy: policy)
-      expect(JSON.parse(parameters)['maven']['layoutPolicy']).to eq(policy)
+      expect(parameters['maven']['layoutPolicy']).to eq(policy)
     end
   end
 
@@ -101,16 +101,16 @@ RSpec.describe NexusAPI::ParameterBuilder do
     end
 
     it 'configures a repodata depth' do
-      expect(JSON.parse(@parameters)['yum']['repodataDepth']).to eq(depth)
+      expect(@parameters['yum']['repodataDepth']).to eq(depth)
     end
 
     it 'uses a strict policy by default' do
-      expect(JSON.parse(@parameters)['yum']['deployPolicy']).to eq(strict)
+      expect(@parameters['yum']['deployPolicy']).to eq(strict)
     end
 
     it 'configures a deploy policy' do
       parameters = NexusAPI::ParameterBuilder.yum_hosted(repo_name, depth, deploy_policy: policy)
-      expect(JSON.parse(parameters)['yum']['deployPolicy']).to eq(policy)
+      expect(parameters['yum']['deployPolicy']).to eq(policy)
     end
   end
 end
