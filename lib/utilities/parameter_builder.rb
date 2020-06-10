@@ -30,7 +30,7 @@ module NexusAPI
           'forceBasicAuth' => true,
           'httpPort' => port
         }
-      }.to_json
+      }
     end
 
     def self.maven_hosted(name, write_policy: ALLOW_ONCE, version_policy: RELEASE, layout_policy: STRICT)
@@ -46,7 +46,7 @@ module NexusAPI
           'versionPolicy' => version_policy,
           'layoutPolicy' => layout_policy
         }
-      }.to_json
+      }
     end
 
     def self.npm_hosted(name, write_policy: ALLOW_ONCE)
@@ -58,7 +58,7 @@ module NexusAPI
           'strictContentTypeValidation' => true,
           'writePolicy' => write_policy
         }
-      }.to_json
+      }
     end
 
     def self.pypi_hosted(name, write_policy: ALLOW_ONCE)
@@ -70,7 +70,7 @@ module NexusAPI
           'strictContentTypeValidation' => true,
           'writePolicy' => write_policy
         }
-      }.to_json
+      }
     end
 
     def self.yum_hosted(name, depth, write_policy: ALLOW_ONCE, deploy_policy: STRICT)
@@ -86,7 +86,7 @@ module NexusAPI
           'repodataDepth' => depth,
           'deployPolicy' => deploy_policy
         }
-      }.to_json
+      }
     end
   end
 end
