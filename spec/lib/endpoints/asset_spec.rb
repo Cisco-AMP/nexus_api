@@ -3,9 +3,9 @@ require 'lib/setup_api'
 RSpec.describe NexusAPI do
   describe 'Assets Endpoint' do
     include_context 'setup NexusAPI::API'
+    let(:repository) { 'repository' }
 
     describe '#list_assets' do
-      let(:repository) { 'assets_repo' }
       let(:url_params) { "assets?repository=#{repository}" }
       let(:team_config) { double }
 
@@ -44,6 +44,16 @@ RSpec.describe NexusAPI do
       it 'sends :get_response from assets with pagination set to true to the NexusConnection instance' do
         expect(api.connection).to receive(:get_response).with(hash_including(paginate: true))
         api.list_assets(repository: repository, paginate: true)
+      end
+    end
+
+    describe '#list_all_assets' do
+      it 'paginates automatically' do
+        first_page = [1,2]
+        second_page = [3,4]
+        expect(api).to receive(:paginate?).and_return(true, false)
+        expect(api).to receive(:list_assets).and_return(first_page, second_page)
+        expect(api.list_all_assets(repository: repository)).to eq(first_page + second_page)
       end
     end
 

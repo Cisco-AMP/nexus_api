@@ -90,7 +90,12 @@ api.search_asset(
 #  - list_components
 #  - list_tags
 #  - search_asset
-# You can use the following pattern to page through each method:
+# You can use the following methods to automatically gather data from all pages for you:
+#  - list_all_assets
+#  - list_all_components
+#  - list_all_tags
+#  - search_all_assets
+# Or you can use the following pattern to page through if additional processing is desired:
 set = Array.new.tap do |set|
   loop do
     set.concat(api.METHOD_YOU_WANT(ARGUMENTS, paginate: true))

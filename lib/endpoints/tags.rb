@@ -5,6 +5,15 @@ module NexusAPI
       @connection.get_response(endpoint: 'tags', paginate: paginate)
     end
 
+    def list_all_tags
+      tags = Array.new.tap do |tags|
+        loop do
+          tags.concat(list_tags(paginate: true))
+          break unless paginate?
+        end
+      end
+    end
+
     # POST /service/rest/v1/tags
     def create_tag(name:)
       parameters = JSON.dump({

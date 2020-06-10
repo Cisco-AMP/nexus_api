@@ -6,6 +6,15 @@ module NexusAPI
       @connection.get_response(endpoint: "components?repository=#{repository}", paginate: paginate)
     end
 
+    def list_all_components(repository: nil)
+      components = Array.new.tap do |components|
+        loop do
+          components.concat(list_components(repository: repository, paginate: true))
+          break unless paginate?
+        end
+      end
+    end
+
     # POST /service/rest/v1/components
     def upload_maven_component(filename:, group_id:, artifact_id:, version:, repository: nil, tag: nil)
       repository ||= @team_config.maven_repository

@@ -46,6 +46,18 @@ RSpec.describe NexusAPI do
         end
       end
 
+      describe '#search_all_assets' do
+        let(:name) { 'name' }
+
+        it 'paginates automatically' do
+          first_page = [1,2]
+          second_page = [3,4]
+          expect(api).to receive(:paginate?).and_return(true, false)
+          expect(api).to receive(:search_asset).and_return(first_page, second_page)
+          expect(api.search_all_assets(name: name)).to eq(first_page + second_page)
+        end
+      end
+
       describe 'with different search terms' do
         let(:connection) { double }
         before(:each) { api.connection = connection }
