@@ -248,6 +248,36 @@ RSpec.describe NexusAPI::List do
     end
   end
 
+  describe '#privileges' do
+    describe 'with mock privileges' do
+      let(:privileges) { [{'name' => 'privilege1'}] }
+      before(:each) {
+        expect(@list.api).to receive(:list_privileges).and_return(privileges)
+      }
+
+      it 'sends the list_privileges method to api' do
+        @list.privileges
+      end
+
+      it 'prints the name of each repository by default' do
+        expect { @list.privileges }.to output("privilege1\n").to_stdout
+      end
+
+      it 'prints the full details of each repository when the full option is set' do
+        flags = { :full => true }
+        @list.options = flags
+        expect { @list.privileges }.to output("{\"name\"=>\"privilege1\"}\n").to_stdout
+      end
+    end
+
+    it 'passes the flags set in Thor correctly to api' do
+      expect(@list.api).to receive(:list_privileges).with(no_args)
+      flags = { :full => true }
+      @list.options = flags
+      @list.privileges
+    end
+  end
+
   describe '#repositories' do
     describe 'with mock repositories' do
       let(:repositories) { [{'name' => 'repository1'}] }
@@ -278,6 +308,36 @@ RSpec.describe NexusAPI::List do
     end
   end
 
+  describe '#roles' do
+    describe 'with mock roles' do
+      let(:roles) { [{'name' => 'role1'}] }
+      before(:each) {
+        expect(@list.api).to receive(:list_roles).and_return(roles)
+      }
+
+      it 'sends the list_roles method to api' do
+        @list.roles
+      end
+
+      it 'prints the name of each repository by default' do
+        expect { @list.roles }.to output("role1\n").to_stdout
+      end
+
+      it 'prints the full details of each repository when the full option is set' do
+        flags = { :full => true }
+        @list.options = flags
+        expect { @list.roles }.to output("{\"name\"=>\"role1\"}\n").to_stdout
+      end
+    end
+
+    it 'passes the flags set in Thor correctly to api' do
+      expect(@list.api).to receive(:list_roles).with(no_args)
+      flags = { :full => true }
+      @list.options = flags
+      @list.roles
+    end
+  end
+
   describe '#status' do
     it 'sends the status and status_writable methods to api' do
       expect(@list.api).to receive(:status).and_return(true)
@@ -292,6 +352,36 @@ RSpec.describe NexusAPI::List do
       flags = { :full => true }
       @list.options = flags
       @list.status
+    end
+  end
+
+  describe '#users' do
+    describe 'with mock users' do
+      let(:users) { [{'emailAddress' => 'user1'}] }
+      before(:each) {
+        expect(@list.api).to receive(:list_users).and_return(users)
+      }
+
+      it 'sends the list_users method to api' do
+        @list.users
+      end
+
+      it 'prints the email of each repository by default' do
+        expect { @list.users }.to output("user1\n").to_stdout
+      end
+
+      it 'prints the full details of each repository when the full option is set' do
+        flags = { :full => true }
+        @list.options = flags
+        expect { @list.users }.to output("{\"emailAddress\"=>\"user1\"}\n").to_stdout
+      end
+    end
+
+    it 'passes the flags set in Thor correctly to api' do
+      expect(@list.api).to receive(:list_users).with(no_args)
+      flags = { :full => true }
+      @list.options = flags
+      @list.users
     end
   end
 end
