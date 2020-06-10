@@ -66,14 +66,17 @@ api = NexusAPI::API.new(
 # NOTE: All Docker commands will fail if the docker hostnames are not initialized
 
 # You can query information through the list methods
-api.list_repositories
-api.list_repository_names
 api.list_assets(repository: REPOSITORY_NAME)
 api.list_asset(id: ASSET_ID)
 api.list_components(repository: REPOSITORY_NAME)
 api.list_component(id: ASSET_ID)
+api.list_privileges
+api.list_repositories
+api.list_repository_names
+api.list_roles
 api.list_scripts
 api.list_tags
+api.list_users
 
 # You can search for an asset by its name
 # Optionally, you can pass in additional fields to filter the results

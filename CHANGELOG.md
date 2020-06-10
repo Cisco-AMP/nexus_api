@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.5.0](https://github.com/Cisco-AMP/nexus_api/compare/v1.4.1...v1.5.0) - 2020-06-10
+### Added
+- New methods around the `privileges` endpoint
+- New methods around the `roles` endpoint
+- New methods around the `users` endpoint
+- New `list_all_*` methods for endpoints that paginate so the user doesn't have to page through results themselves if they just want all the raw data
+
+
 ## [1.4.1](https://github.com/Cisco-AMP/nexus_api/compare/v1.4.0...v1.4.1) - 2020-05-08
 ### Changed
 - Error reporting to be more descriptive
