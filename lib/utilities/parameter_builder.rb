@@ -73,6 +73,30 @@ module NexusAPI
       }
     end
 
+    def self.raw_hosted(name, write_policy: ALLOW_ONCE)
+      {
+        'name' => name,
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true,
+          'writePolicy' => write_policy
+        }
+      }
+    end
+
+    def self.rubygems_hosted(name, write_policy: ALLOW_ONCE)
+      {
+        'name' => name,
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true,
+          'writePolicy' => write_policy
+        }
+      }
+    end
+
     def self.yum_hosted(name, depth, write_policy: ALLOW_ONCE, deploy_policy: STRICT)
       {
         'name' => name,
