@@ -5,10 +5,10 @@ A ruby gem that wraps the [Sonatype Nexus Repository Manager 3](https://help.son
 ## Latest Version Tested
 Title | Value
 ---|---
-**Version** | `3.22.0-02`
+**Version** | `3.24.0-02`
 **Edition** | `PRO`
-**Build Revision** | `140e045ce3cdd3f35e6f9d13127d7299d21f7251`
-**Build Timestamp** | `2020-03-27-1616-27700`
+**Build Revision** | `302d6f23f1414581162efaf0fa7b4d81dbf9b251`
+**Build Timestamp** | `2020-06-03-2332-51567`
 
 
 ## Installation

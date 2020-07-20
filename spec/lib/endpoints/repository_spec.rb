@@ -78,6 +78,20 @@ RSpec.describe NexusAPI do
       end
     end
 
+    describe '#create_repository_raw_hosted' do
+      it_behaves_like 'a create hosted repository command' do
+        let(:repo_type) { 'raw' }
+        let(:create_command) { api.create_repository_raw_hosted(name: name) }
+      end
+    end
+
+    describe '#create_repository_rubygems_hosted' do
+      it_behaves_like 'a create hosted repository command' do
+        let(:repo_type) { 'rubygems' }
+        let(:create_command) { api.create_repository_rubygems_hosted(name: name) }
+      end
+    end
+
     describe '#create_repository_yum_hosted' do
       let(:depth) { 2 }
 

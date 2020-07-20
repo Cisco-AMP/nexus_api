@@ -31,6 +31,8 @@ module NexusAPI
     # PUT /service/rest/beta/repositories/bower/hosted/{repositoryName}
     # POST /service/rest/beta/repositories/bower/proxy
     # PUT /service/rest/beta/repositories/bower/proxy/{repositoryName}
+    # POST /service/rest/beta/repositories/cocoapods/proxy
+    # PUT /service/rest/beta/repositories/cocoapods/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/conan/proxy
     # PUT /service/rest/beta/repositories/conan/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/docker/group
@@ -54,6 +56,8 @@ module NexusAPI
     # PUT /service/rest/beta/repositories/helm/hosted/{repositoryName}
     # POST /service/rest/beta/repositories/helm/proxy
     # PUT /service/rest/beta/repositories/helm/proxy/{repositoryName}
+    # POST /service/rest/beta/repositories/maven/group
+    # PUT /service/rest/beta/repositories/maven/group/{repositoryName}
     # POST /service/rest/beta/repositories/maven/hosted
     def create_repository_maven_hosted(name:)
       parameters = ParameterBuilder.maven_hosted(name)
@@ -93,6 +97,36 @@ module NexusAPI
     # PUT /service/rest/beta/repositories/pypi/hosted/{repositoryName}
     # POST /service/rest/beta/repositories/pypi/proxy
     # PUT /service/rest/beta/repositories/pypi/proxy/{repositoryName}
+    # POST /service/rest/beta/repositories/r/group
+    # PUT /service/rest/beta/repositories/r/group/{repositoryName}
+    # POST /service/rest/beta/repositories/r/hosted
+    # PUT /service/rest/beta/repositories/r/hosted/{repositoryName}
+    # POST /service/rest/beta/repositories/r/proxy
+    # PUT /service/rest/beta/repositories/r/proxy/{repositoryName}
+    # POST /service/rest/beta/repositories/raw/group
+    # PUT /service/rest/beta/repositories/raw/group/{repositoryName}
+    # POST /service/rest/beta/repositories/raw/hosted
+    def create_repository_raw_hosted(name:)
+      parameters = ParameterBuilder.raw_hosted(name)
+      @connection.post(endpoint: 'repositories/raw/hosted', parameters: parameters, api_version: 'beta')
+    end
+
+    # PUT /service/rest/beta/repositories/raw/hosted/{repositoryName}
+    # POST /service/rest/beta/repositories/raw/proxy
+    # PUT /service/rest/beta/repositories/raw/proxy/{repositoryName}
+    # POST /service/rest/beta/repositories/rubygems/group
+    # PUT /service/rest/beta/repositories/rubygems/group/{repositoryName}
+    # POST /service/rest/beta/repositories/rubygems/hosted
+    def create_repository_rubygems_hosted(name:)
+      parameters = ParameterBuilder.rubygems_hosted(name)
+      @connection.post(endpoint: 'repositories/rubygems/hosted', parameters: parameters, api_version: 'beta')
+    end
+
+    # PUT /service/rest/beta/repositories/rubygems/hosted/{repositoryName}
+    # POST /service/rest/beta/repositories/rubygems/proxy
+    # PUT /service/rest/beta/repositories/rubygems/proxy/{repositoryName}
+    # POST /service/rest/beta/repositories/yum/group
+    # PUT /service/rest/beta/repositories/yum/group/{repositoryName}
     # POST /service/rest/beta/repositories/yum/hosted
     def create_repository_yum_hosted(name:, depth:)
       parameters = ParameterBuilder.yum_hosted(name, depth)
@@ -100,5 +134,7 @@ module NexusAPI
     end
 
     # PUT /service/rest/beta/repositories/yum/hosted/{repositoryName}
+    # POST /service/rest/beta/repositories/yum/proxy
+    # PUT /service/rest/beta/repositories/yum/proxy/{repositoryName}
   end
 end

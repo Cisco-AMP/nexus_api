@@ -86,6 +86,24 @@ RSpec.describe NexusAPI::ParameterBuilder do
     end
   end
 
+  describe '.raw_hosted' do
+    it_behaves_like 'a base parameter set' do
+      let(:parameters) { NexusAPI::ParameterBuilder.raw_hosted(repo_name) }
+      let(:overloaded_parameters) do
+        NexusAPI::ParameterBuilder.raw_hosted(repo_name, write_policy: policy)
+      end
+    end
+  end
+
+  describe '.rubygems_hosted' do
+    it_behaves_like 'a base parameter set' do
+      let(:parameters) { NexusAPI::ParameterBuilder.rubygems_hosted(repo_name) }
+      let(:overloaded_parameters) do
+        NexusAPI::ParameterBuilder.rubygems_hosted(repo_name, write_policy: policy)
+      end
+    end
+  end
+
   describe '.yum_hosted' do
     let(:depth) { 1 }
 
