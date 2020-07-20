@@ -16,9 +16,9 @@ module NexusAPI
 
     # POST /service/rest/v1/tags
     def create_tag(name:)
-      parameters = JSON.dump({
+      parameters = {
         'name' => name,
-      })
+      }
       @connection.post(endpoint: 'tags', parameters: parameters)
     end
 

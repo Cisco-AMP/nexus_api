@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.6.1](https://github.com/Cisco-AMP/nexus_api/compare/v1.6.0...v1.6.1) - 2020-07-20
+### Fixed
+- Parameters for tag creation were being JSON encoded twice resulting in data Nexus could not parse
+
+
 ## [1.6.0](https://github.com/Cisco-AMP/nexus_api/compare/v1.5.0...v1.6.0) - 2020-07-20
 ### Added
 - `create_repository_raw_hosted()`

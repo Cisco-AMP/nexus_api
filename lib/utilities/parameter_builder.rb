@@ -1,5 +1,3 @@
-require 'json'
-
 module NexusAPI
   class ParameterBuilder
     # Write Policies
