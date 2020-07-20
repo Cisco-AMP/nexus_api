@@ -37,14 +37,14 @@ RSpec.describe NexusAPI do
       end
 
       describe '#create_tag' do
-        let(:name_parameter) { JSON.dump({'name' => tag}) }
+        let(:name_parameter) { {'name' => tag} }
 
         it 'sends :post tags to the NexusConnection instance' do
           expect(api.connection).to receive(:post).with(endpoint: tag_endpoint, parameters: anything)
           api.create_tag(name: tag)
         end
 
-        it 'sends a tag name as a JSON parameter' do
+        it 'sends a tag name as a parameter' do
           expect(api.connection).to receive(:post).with(endpoint: anything, parameters: name_parameter)
           api.create_tag(name: tag)
         end
