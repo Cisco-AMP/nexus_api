@@ -65,35 +65,160 @@ api = NexusAPI::API.new(
 )
 # NOTE: All Docker commands will fail if the docker hostnames are not initialized
 
+
+# You can create various types of repositories in different formats
+api.create_repository_docker_group(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_docker_hosted(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_docker_proxy(
+  name: REPOSITORY_NAME,
+  remote_url: URL_TO_PROXY,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+
+api.create_repository_maven_group(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_maven_hosted(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_maven_proxy(
+  name: REPOSITORY_NAME,
+  remote_url: URL_TO_PROXY,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+
+api.create_repository_npm_group(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_npm_hosted(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_npm_proxy(
+  name: REPOSITORY_NAME,
+  remote_url: URL_TO_PROXY,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+
+api.create_repository_pypi_group(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_pypi_hosted(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_pypi_proxy(
+  name: REPOSITORY_NAME,
+  remote_url: URL_TO_PROXY,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+
+api.create_repository_raw_group(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_raw_hosted(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_raw_proxy(
+  name: REPOSITORY_NAME,
+  remote_url: URL_TO_PROXY,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+
+api.create_repository_rubygems_group(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_rubygems_hosted(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_rubygems_proxy(
+  name: REPOSITORY_NAME,
+  remote_url: URL_TO_PROXY,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+
+api.create_repository_yum_group(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_yum_hosted(
+  name: REPOSITORY_NAME,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+api.create_repository_yum_proxy(
+  name: REPOSITORY_NAME,
+  remote_url: URL_TO_PROXY,
+  options: HASH_OF_REPOSITORY_OPTIONS
+)
+
+
 # You can query information through the list methods
-api.list_assets(repository: REPOSITORY_NAME)
+api.list_all_assets(repository: REPOSITORY_NAME)
+api.list_assets(repository: REPOSITORY_NAME, paginate: BOOLEAN)
 api.list_asset(id: ASSET_ID)
-api.list_components(repository: REPOSITORY_NAME)
+
+api.list_all_components(repository: REPOSITORY_NAME)
+api.list_components(repository: REPOSITORY_NAME, paginate: BOOLEAN)
 api.list_component(id: ASSET_ID)
+
 api.list_privileges
+api.list_privilege(privilege_id: ID)
+
 api.list_repositories
 api.list_repository_names
+
 api.list_roles
+api.list_role(id: ROLE_ID)
+
 api.list_scripts
-api.list_tags
+
+api.list_all_tags
+api.list_tags(paginate: BOOLEAN)
+
 api.list_users
+
 
 # You can search for an asset by its name
 # Optionally, you can pass in additional fields to filter the results
+api.search_all_assets(
+  name: ASSET_NAME,
+  format: REPOSITORY_FORMAT,    # Optional
+  repository: REPOSITORY_NAME,  # Optional
+  sha1: SHA1,                   # Optional
+  version: VERSION,             # Optional
+  paginate: BOOLEAN             # Optional
+)
+# You can also paginate through the results if you want to do some additional filtering
 api.search_asset(
   name: ASSET_NAME,
   format: REPOSITORY_FORMAT,    # Optional
   repository: REPOSITORY_NAME,  # Optional
   sha1: SHA1,                   # Optional
   version: VERSION,             # Optional
+  paginate: BOOLEAN             # Optional
 )
+
 
 # The following endpoints will paginate: 
 #  - list_assets
 #  - list_components
 #  - list_tags
 #  - search_asset
-# You can use the following methods to automatically gather data from all pages for you:
+# Or you can use the following methods to automatically gather data from all pages for you:
 #  - list_all_assets
 #  - list_all_components
 #  - list_all_tags
@@ -106,8 +231,10 @@ set = Array.new.tap do |set|
   end
 end
 
+
 # You can move all components that are tagged to a new destination
 api.move_components_to(destination: DESTINATION, tag: TAG)
+
 
 # You can download an asset by using its asset_id
 # Optionally, you can rename the file on download
@@ -115,6 +242,7 @@ api.download(
   id: ASSET_ID,
   name: NEW_FILE_NAME,  # Optional
 )
+
 
 # Different asset types require differing information to be uploaded
 # Optionally, you can tag the component provided the tag already exists
@@ -154,11 +282,13 @@ api.upload_yum_component(
   tag: TAG,                     # Optional
 )
 
+
 # Docker is a special case and uses the local Docker daemon
 # If this daemon is not installed and running these methods will fail
 # NOTE: Docker login/logout is handled as part of the docker methods
 api.download_docker_component(image: IMAGE_NAME, tag: DOCKER_TAG)
 api.upload_docker_component(image: IMAGE_NAME, tag: DOCKER_TAG)
+
 
 # You can create/delete tags and associate/disassociate them from components
 # (we use the SHA1 rather than the file name because the Nexus search is inconsistent)
@@ -167,9 +297,11 @@ api.associate_tag(name: TAG, sha1: SHA1_SUM, repository: REPOSITORY_NAME)
 api.delete_associated_tag(name: TAG, sha1: SHA1_SUM, repository: REPOSITORY_NAME)
 api.delete_tag(name: TAG)
 
+
 # You can query the Nexus status
 api.status
 api.status_writable
+
 
 # Using an asset's URL you can gather its filesize as a String
 api.get_asset_size(asset_url: URL)
