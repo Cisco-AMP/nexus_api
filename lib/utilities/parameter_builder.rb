@@ -1,56 +1,42 @@
 module NexusAPI
   class ParameterBuilder
-    # Write Policies
-    ALLOW = 'ALLOW'
-    ALLOW_ONCE = 'ALLOW_ONCE'
-    DENY = 'DENY'
-
-    # Version Policy
-    RELEASE = 'RELEASE'
-    SNAPSHOT = 'SNAPSHOT'
-    MIXED = 'MIXED'
-
-    # Layout or Deploy Policy
-    STRICT = 'STRICT'
-    PERMISSIVE = 'PERMISSIVE'
-
-
-    def self.docker_group(name, members, http_port, https_port)
-      parameters = {
-        'name' => name,
+    def self.docker_group(name, options)
+      # TODO: Check this method
+      default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {},
-        'docker' => {
-          'v1Enabled' => false,
-          'forceBasicAuth' => true
-        }
-      }
-      parameters['group']['memberNames'] = members unless members.empty?
-      parameters['docker']['httpPort'] = http_port unless http_port.nil?
-      parameters['docker']['httpsPort'] = https_port unless https_port.nil?
-    end
-
-    def self.docker_hosted(name, write_policy, cleanup_policies, http_port, https_port)
-      {
-        'name' => name,
-        'online' => true,
-        'storage' => {
-          'blobStoreName' => 'default',
-          'strictContentTypeValidation' => true,
-          'writePolicy' => write_policy
+        'group' => {
+          'memberNames' => []
         },
         'docker' => {
           'v1Enabled' => false,
           'forceBasicAuth' => true
         }
       }
-      parameters['cleanup']['policyNames'] = cleanup_policies unless cleanup_policies.empty?
-      parameters['docker']['httpPort'] = http_port unless http_port.nil?
-      parameters['docker']['httpsPort'] = https_port unless https_port.nil?
+      apply_changes(default_options, options, name)
+    end
+
+    def self.docker_hosted(name, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true,
+          'writePolicy' => 'allow_once'
+        },
+        'cleanup' => {
+          'policyNames' => []
+        },
+        'docker' => {
+          'v1Enabled' => false,
+          'forceBasicAuth' => true
+        }
+      }
+      apply_changes(default_options, options, name)
     end
 
     def self.docker_proxy(name, remote_url, options)
@@ -80,540 +66,451 @@ module NexusAPI
           'indexType' => 'REGISTRY'
         }
       }
-      options = deep_merge(default_options, options)
-      options['name'] = name
-      options['proxy']['remoteUrl'] = remote_url
-      return options
+      apply_changes(default_options, options, name, remote_url)
     end
 
-    def self.maven_group()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "group": {
-#     "memberNames": [
-#       "string"
-#     ]
-#   }
-# }
+    def self.maven_group(name, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'group' => {
+          'memberNames' => []
+        }
+      }
+      apply_changes(default_options, options, name)
     end
 
-    def self.maven_hosted(name, write_policy: ALLOW_ONCE, version_policy: RELEASE, layout_policy: STRICT)
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true,
-#     "writePolicy": "allow_once"
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "maven": {
-#     "versionPolicy": "MIXED",
-#     "layoutPolicy": "STRICT"
-#   }
-# }
-      {
-        'name' => name,
+    def self.maven_hosted(name, options)
+      # TODO: Check this method
+      default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true,
-          'writePolicy' => write_policy
+          'writePolicy' => 'allow_once'
+        },
+        'cleanup' => {
+          'policyNames' => []
         },
         'maven' => {
-          'versionPolicy' => version_policy,
-          'layoutPolicy' => layout_policy
+          'versionPolicy' => 'RELEASE',
+          'layoutPolicy' => 'STRICT'
         }
       }
+      apply_changes(default_options, options, name)
     end
 
-    def self.maven_proxy()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "proxy": {
-#     "remoteUrl": "https://remote.repository.com",
-#     "contentMaxAge": 1440,
-#     "metadataMaxAge": 1440
-#   },
-#   "negativeCache": {
-#     "enabled": true,
-#     "timeToLive": 1440
-#   },
-#   "httpClient": {
-#     "blocked": false,
-#     "autoBlock": true,
-#     "connection": {
-#       "retries": 0,
-#       "userAgentSuffix": "string",
-#       "timeout": 60,
-#       "enableCircularRedirects": false,
-#       "enableCookies": false
-#     },
-#     "authentication": {
-#       "type": "username",
-#       "username": "string",
-#       "ntlmHost": "string",
-#       "ntlmDomain": "string"
-#     }
-#   },
-#   "routingRule": "string",
-#   "maven": {
-#     "versionPolicy": "MIXED",
-#     "layoutPolicy": "STRICT"
-#   }
-# }
+    def self.maven_proxy(name, remote_url, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'cleanup' => {
+          'policyNames' => []
+        },
+        'proxy' => {
+          'contentMaxAge' => 1440,
+          'metadataMaxAge' => 1440
+        },
+        'negativeCache' => {
+          'enabled' => true,
+          'timeToLive' => 1440
+        },
+        'httpClient' => {
+          'blocked' => false,
+          'autoBlock' => true,
+          # 'connection' => {
+          #   'retries' => 0,
+          #   'userAgentSuffix' => 'string',
+          #   'timeout' => 60,
+          #   'enableCircularRedirects' => false,
+          #   'enableCookies' => false
+          # },
+          # 'authentication' => {
+          #   'type' => 'username',
+          #   'username' => 'string',
+          #   'ntlmHost' => 'string',
+          #   'ntlmDomain' => 'string'
+          # }
+        },
+        # 'routingRule' => 'string',
+        'maven' => {
+          'versionPolicy' => 'RELEASE',
+          'layoutPolicy' => 'STRICT'
+        }
+      }
+      apply_changes(default_options, options, name, remote_url)
     end
 
-    def self.npm_group()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "group": {
-#     "memberNames": [
-#       "string"
-#     ]
-#   }
-# }
+    def self.npm_group(name, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'group' => {
+          'memberNames' => []
+        }
+      }
+      apply_changes(default_options, options, name)
     end
 
-    def self.npm_hosted(name, write_policy: ALLOW_ONCE)
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true,
-#     "writePolicy": "allow_once"
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   }
-# }
-      {
-        'name' => name,
+    def self.npm_hosted(name, options)
+      # TODO: Check this method
+      default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true,
-          'writePolicy' => write_policy
+          'writePolicy' => 'allow_once'
+        },
+        'cleanup' => {
+          'policyNames' => []
         }
       }
+      apply_changes(default_options, options, name)
     end
 
-    def self.npm_proxy()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "proxy": {
-#     "remoteUrl": "https://remote.repository.com",
-#     "contentMaxAge": 1440,
-#     "metadataMaxAge": 1440
-#   },
-#   "negativeCache": {
-#     "enabled": true,
-#     "timeToLive": 1440
-#   },
-#   "httpClient": {
-#     "blocked": false,
-#     "autoBlock": true,
-#     "connection": {
-#       "retries": 0,
-#       "userAgentSuffix": "string",
-#       "timeout": 60,
-#       "enableCircularRedirects": false,
-#       "enableCookies": false
-#     },
-#     "authentication": {
-#       "type": "username",
-#       "username": "string",
-#       "ntlmHost": "string",
-#       "ntlmDomain": "string"
-#     }
-#   },
-#   "routingRule": "string"
-# }
+    def self.npm_proxy(name, remote_url, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'cleanup' => {
+          'policyNames' => []
+        },
+        'proxy' => {
+          'contentMaxAge' => 1440,
+          'metadataMaxAge' => 1440
+        },
+        'negativeCache' => {
+          'enabled' => true,
+          'timeToLive' => 1440
+        },
+        'httpClient' => {
+          'blocked' => false,
+          'autoBlock' => true,
+          # 'connection' => {
+          #   'retries' => 0,
+          #   'userAgentSuffix' => 'string',
+          #   'timeout' => 60,
+          #   'enableCircularRedirects' => false,
+          #   'enableCookies' => false
+          # },
+          # 'authentication' => {
+          #   'type' => 'username',
+          #   'username' => 'string',
+          #   'ntlmHost' => 'string',
+          #   'ntlmDomain' => 'string'
+          # }
+        },
+        # 'routingRule' => 'string'
+      }
+      apply_changes(default_options, options, name, remote_url)
     end
 
-    def self.pypi_group()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "group": {
-#     "memberNames": [
-#       "string"
-#     ]
-#   }
-# }
+    def self.pypi_group(name, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'group' => {
+          'memberNames' => []
+        }
+      }
+      apply_changes(default_options, options, name)
     end
 
-    def self.pypi_hosted(name, write_policy: ALLOW_ONCE)
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true,
-#     "writePolicy": "allow_once"
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   }
-# }
-      {
-        'name' => name,
+    def self.pypi_hosted(name, options)
+      # TODO: Check this method
+      default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true,
-          'writePolicy' => write_policy
+          'writePolicy' => 'allow_once'
+        },
+        'cleanup' => {
+          'policyNames' => []
         }
       }
+      apply_changes(default_options, options, name)
     end
 
-    def self.pypi_proxy()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "proxy": {
-#     "remoteUrl": "https://remote.repository.com",
-#     "contentMaxAge": 1440,
-#     "metadataMaxAge": 1440
-#   },
-#   "negativeCache": {
-#     "enabled": true,
-#     "timeToLive": 1440
-#   },
-#   "httpClient": {
-#     "blocked": false,
-#     "autoBlock": true,
-#     "connection": {
-#       "retries": 0,
-#       "userAgentSuffix": "string",
-#       "timeout": 60,
-#       "enableCircularRedirects": false,
-#       "enableCookies": false
-#     },
-#     "authentication": {
-#       "type": "username",
-#       "username": "string",
-#       "ntlmHost": "string",
-#       "ntlmDomain": "string"
-#     }
-#   },
-#   "routingRule": "string"
-# }
+    def self.pypi_proxy(name, remote_url, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'cleanup' => {
+          'policyNames' => []
+        },
+        'proxy' => {
+          'contentMaxAge' => 1440,
+          'metadataMaxAge' => 1440
+        },
+        'negativeCache' => {
+          'enabled' => true,
+          'timeToLive' => 1440
+        },
+        'httpClient' => {
+          'blocked' => false,
+          'autoBlock' => true,
+          # 'connection' => {
+          #   'retries' => 0,
+          #   'userAgentSuffix' => 'string',
+          #   'timeout' => 60,
+          #   'enableCircularRedirects' => false,
+          #   'enableCookies' => false
+          # },
+          # 'authentication' => {
+          #   'type' => 'username',
+          #   'username' => 'string',
+          #   'ntlmHost' => 'string',
+          #   'ntlmDomain' => 'string'
+          # }
+        },
+        # 'routingRule' => 'string'
+      }
+      apply_changes(default_options, options, name, remote_url)
     end
 
-    def self.raw_group()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "group": {
-#     "memberNames": [
-#       "string"
-#     ]
-#   }
-# }
+    def self.raw_group(name, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'group' => {
+          'memberNames' => []
+        }
+      }
+      apply_changes(default_options, options, name)
     end
 
-    def self.raw_hosted(name, write_policy: ALLOW_ONCE)
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true,
-#     "writePolicy": "allow_once"
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   }
-# }
-      {
-        'name' => name,
+    def self.raw_hosted(name, options)
+      # TODO: Check this method
+      default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true,
-          'writePolicy' => write_policy
+          'writePolicy' => 'allow_once'
+        },
+        'cleanup' => {
+          'policyNames' => []
         }
       }
+      apply_changes(default_options, options, name)
     end
 
-    def self.raw_proxy()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "proxy": {
-#     "remoteUrl": "https://remote.repository.com",
-#     "contentMaxAge": 1440,
-#     "metadataMaxAge": 1440
-#   },
-#   "negativeCache": {
-#     "enabled": true,
-#     "timeToLive": 1440
-#   },
-#   "httpClient": {
-#     "blocked": false,
-#     "autoBlock": true,
-#     "connection": {
-#       "retries": 0,
-#       "userAgentSuffix": "string",
-#       "timeout": 60,
-#       "enableCircularRedirects": false,
-#       "enableCookies": false
-#     },
-#     "authentication": {
-#       "type": "username",
-#       "username": "string",
-#       "ntlmHost": "string",
-#       "ntlmDomain": "string"
-#     }
-#   },
-#   "routingRule": "string"
-# }
+    def self.raw_proxy(name, remote_url, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'cleanup' => {
+          'policyNames' => []
+        },
+        'proxy' => {
+          'contentMaxAge' => 1440,
+          'metadataMaxAge' => 1440
+        },
+        'negativeCache' => {
+          'enabled' => true,
+          'timeToLive' => 1440
+        },
+        'httpClient' => {
+          'blocked' => false,
+          'autoBlock' => true,
+          # 'connection' => {
+          #   'retries' => 0,
+          #   'userAgentSuffix' => 'string',
+          #   'timeout' => 60,
+          #   'enableCircularRedirects' => false,
+          #   'enableCookies' => false
+          # },
+          # 'authentication' => {
+          #   'type' => 'username',
+          #   'username' => 'string',
+          #   'ntlmHost' => 'string',
+          #   'ntlmDomain' => 'string'
+          # }
+        },
+        # 'routingRule': 'string'
+      }
+      apply_changes(default_options, options, name, remote_url)
     end
 
-    def self.rubygems_group()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "group": {
-#     "memberNames": [
-#       "string"
-#     ]
-#   }
-# }
+    def self.rubygems_group(name, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'group' => {
+          'memberNames' => []
+        }
+      }
+      apply_changes(default_options, options, name)
     end
 
-    def self.rubygems_hosted(name, write_policy: ALLOW_ONCE)
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true,
-#     "writePolicy": "allow_once"
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   }
-# }
-      {
-        'name' => name,
+    def self.rubygems_hosted(name, options)
+      # TODO: Check this method
+      default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true,
-          'writePolicy' => write_policy
+          'writePolicy' => 'allow_once'
+        },
+        'cleanup' => {
+          'policyNames' => []
         }
       }
+      apply_changes(default_options, options, name)
     end
 
-    def self.rubygems_proxy()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "proxy": {
-#     "remoteUrl": "https://remote.repository.com",
-#     "contentMaxAge": 1440,
-#     "metadataMaxAge": 1440
-#   },
-#   "negativeCache": {
-#     "enabled": true,
-#     "timeToLive": 1440
-#   },
-#   "httpClient": {
-#     "blocked": false,
-#     "autoBlock": true,
-#     "connection": {
-#       "retries": 0,
-#       "userAgentSuffix": "string",
-#       "timeout": 60,
-#       "enableCircularRedirects": false,
-#       "enableCookies": false
-#     },
-#     "authentication": {
-#       "type": "username",
-#       "username": "string",
-#       "ntlmHost": "string",
-#       "ntlmDomain": "string"
-#     }
-#   },
-#   "routingRule": "string"
-# }
+    def self.rubygems_proxy(name, remote_url, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'cleanup' => {
+          'policyNames' => []
+        },
+        'proxy' => {
+          'contentMaxAge' => 1440,
+          'metadataMaxAge' => 1440
+        },
+        'negativeCache' => {
+          'enabled' => true,
+          'timeToLive' => 1440
+        },
+        'httpClient' => {
+          'blocked' => false,
+          'autoBlock' => true,
+          # 'connection' => {
+          #   'retries' => 0,
+          #   'userAgentSuffix' => 'string',
+          #   'timeout' => 60,
+          #   'enableCircularRedirects' => false,
+          #   'enableCookies' => false
+          # },
+          # 'authentication' => {
+          #   'type' => 'username',
+          #   'username' => 'string',
+          #   'ntlmHost' => 'string',
+          #   'ntlmDomain' => 'string'
+          # }
+        },
+        # 'routingRule' => 'string'
+      }
+      apply_changes(default_options, options, name, remote_url)
     end
 
-    def self.yum_group()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "group": {
-#     "memberNames": [
-#       "string"
-#     ]
-#   }
-# }
+    def self.yum_group(name, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'group' => {
+          'memberNames' => []
+        }
+      }
+      apply_changes(default_options, options, name)
     end
 
-    def self.yum_hosted(name, depth, write_policy: ALLOW_ONCE, deploy_policy: STRICT)
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true,
-#     "writePolicy": "allow_once"
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "yum": {
-#     "repodataDepth": 5,
-#     "deployPolicy": "STRICT"
-#   }
-# }
-      {
-        'name' => name,
+    def self.yum_hosted(name, options)
+      # TODO: Check this method
+      default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true,
-          'writePolicy' => write_policy
+          'writePolicy' => 'allow_once'
+        },
+        'cleanup' => {
+          'policyNames' => []
         },
         'yum' => {
-          'repodataDepth' => depth,
-          'deployPolicy' => deploy_policy
+          'repodataDepth' => 3,
+          'deployPolicy' => 'STRICT'
         }
       }
+      apply_changes(default_options, options, name)
     end
 
-    def self.yum_proxy()
-# {
-#   "name": "internal",
-#   "online": true,
-#   "storage": {
-#     "blobStoreName": "default",
-#     "strictContentTypeValidation": true
-#   },
-#   "cleanup": {
-#     "policyNames": [
-#       "string"
-#     ]
-#   },
-#   "proxy": {
-#     "remoteUrl": "https://remote.repository.com",
-#     "contentMaxAge": 1440,
-#     "metadataMaxAge": 1440
-#   },
-#   "negativeCache": {
-#     "enabled": true,
-#     "timeToLive": 1440
-#   },
-#   "httpClient": {
-#     "blocked": false,
-#     "autoBlock": true,
-#     "connection": {
-#       "retries": 0,
-#       "userAgentSuffix": "string",
-#       "timeout": 60,
-#       "enableCircularRedirects": false,
-#       "enableCookies": false
-#     },
-#     "authentication": {
-#       "type": "username",
-#       "username": "string",
-#       "ntlmHost": "string",
-#       "ntlmDomain": "string"
-#     }
-#   },
-#   "routingRule": "string"
-# }
+    def self.yum_proxy(name, remote_url, options)
+      # TODO: Check this method
+      default_options = {
+        'online' => true,
+        'storage' => {
+          'blobStoreName' => 'default',
+          'strictContentTypeValidation' => true
+        },
+        'cleanup' => {
+          'policyNames' => []
+        },
+        'proxy' => {
+          'contentMaxAge' => 1440,
+          'metadataMaxAge' => 1440
+        },
+        'negativeCache' => {
+          'enabled' => true,
+          'timeToLive' => 1440
+        },
+        'httpClient' => {
+          'blocked' => false,
+          'autoBlock' => true,
+          # 'connection' => {
+          #   'retries' => 0,
+          #   'userAgentSuffix' => 'string',
+          #   'timeout' => 60,
+          #   'enableCircularRedirects' => false,
+          #   'enableCookies' => false
+          # },
+          # 'authentication' => {
+          #   'type' => 'username',
+          #   'username' => 'string',
+          #   'ntlmHost' => 'string',
+          #   'ntlmDomain' => 'string'
+          # }
+        },
+        # 'routingRule' => 'string'
+      }
+      apply_changes(default_options, options, name, remote_url)
     end
 
 
@@ -640,6 +537,13 @@ module NexusAPI
       end
 
       return full_hash
+    end
+
+    def self.apply_changes(default_options, options, name, url=nil)
+      options = deep_merge(default_options, options)
+      options['name'] = name
+      options['proxy']['remoteUrl'] = url unless url.nil?
+      return options
     end
   end
 end
