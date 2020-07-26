@@ -194,7 +194,7 @@ module NexusAPI
     # PUT /service/rest/beta/repositories/yum/group/{repositoryName}
     # POST /service/rest/beta/repositories/yum/hosted
     def create_repository_yum_hosted(name:, options: {})
-      parameters = ParameterBuilder.yum_hosted(name, depth)
+      parameters = ParameterBuilder.yum_hosted(name, options)
       create('repositories/yum/hosted', parameters)
     end
 
