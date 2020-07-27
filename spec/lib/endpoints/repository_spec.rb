@@ -4,7 +4,7 @@ RSpec.shared_examples 'a group repository' do
   it 'sends a post to create a repo' do
     url = "#{BASE_URL}/beta/repositories/#{repo_type}/group"
     stub_request(:post, url)
-      .with(body: hash_including({'name' => name}))
+      .with(body: hash_including({'name' => name, 'group' => anything}))
       .with(headers: { 'Content-Type'=>'application/json' })
     expect(create_command).to be(true)
     expect(a_request(:post, url)).to have_been_made
@@ -36,6 +36,7 @@ end
 
 RSpec.describe NexusAPI do
   let(:name) { 'name' }
+  let(:members) { ['member1', 'member2'] }
   let(:remote_url) { 'remote_url' }
 
   describe 'Repositories Endpoint' do
@@ -76,7 +77,7 @@ RSpec.describe NexusAPI do
     describe '#create_repository_docker_group' do
       it_behaves_like 'a group repository' do
         let(:repo_type) { 'docker' }
-        let(:create_command) { api.create_repository_docker_group(name: name) }
+        let(:create_command) { api.create_repository_docker_group(name: name, members: members) }
       end
     end
 
@@ -98,7 +99,7 @@ RSpec.describe NexusAPI do
     describe '#create_repository_maven_group' do
       it_behaves_like 'a group repository' do
         let(:repo_type) { 'maven' }
-        let(:create_command) { api.create_repository_maven_group(name: name) }
+        let(:create_command) { api.create_repository_maven_group(name: name, members: members) }
       end
     end
 
@@ -120,7 +121,7 @@ RSpec.describe NexusAPI do
     describe '#create_repository_npm_group' do
       it_behaves_like 'a group repository' do
         let(:repo_type) { 'npm' }
-        let(:create_command) { api.create_repository_npm_group(name: name) }
+        let(:create_command) { api.create_repository_npm_group(name: name, members: members) }
       end
     end
 
@@ -142,7 +143,7 @@ RSpec.describe NexusAPI do
     describe '#create_repository_pypi_group' do
       it_behaves_like 'a group repository' do
         let(:repo_type) { 'pypi' }
-        let(:create_command) { api.create_repository_pypi_group(name: name) }
+        let(:create_command) { api.create_repository_pypi_group(name: name, members: members) }
       end
     end
 
@@ -164,7 +165,7 @@ RSpec.describe NexusAPI do
     describe '#create_repository_raw_group' do
       it_behaves_like 'a group repository' do
         let(:repo_type) { 'raw' }
-        let(:create_command) { api.create_repository_raw_group(name: name) }
+        let(:create_command) { api.create_repository_raw_group(name: name, members: members) }
       end
     end
 
@@ -186,7 +187,7 @@ RSpec.describe NexusAPI do
     describe '#create_repository_rubygems_group' do
       it_behaves_like 'a group repository' do
         let(:repo_type) { 'rubygems' }
-        let(:create_command) { api.create_repository_rubygems_group(name: name) }
+        let(:create_command) { api.create_repository_rubygems_group(name: name, members: members) }
       end
     end
 
@@ -208,7 +209,7 @@ RSpec.describe NexusAPI do
     describe '#create_repository_yum_group' do
       it_behaves_like 'a group repository' do
         let(:repo_type) { 'yum' }
-        let(:create_command) { api.create_repository_yum_group(name: name) }
+        let(:create_command) { api.create_repository_yum_group(name: name, members: members) }
       end
     end
 

@@ -5,36 +5,40 @@ RSpec.shared_examples 'a group repository' do
   let(:members) { ['member1', 'member2'] }
 
   before(:each) do
-    @result = NexusAPI::ParameterBuilder.send(method, repo_name, {})
+    @default = NexusAPI::ParameterBuilder.send(method, repo_name, members, {})
   end
 
   it 'provides default options' do
-    expect(@result).to be_a(Hash)
-    expect(@result).not_to eq({})
+    expect(@default).to be_a(Hash)
+    expect(@default).not_to eq({})
   end
 
   it 'sets a name' do
-    expect(@result['name']).to eq(repo_name)
+    expect(@default['name']).to eq(repo_name)
+  end
+
+  it 'sets group members' do
+    expect(@default['group']['memberNames']).to eq(members)
   end
 
   it 'can override the default options' do
-    result = NexusAPI::ParameterBuilder.send(method, repo_name, {'group' => {'memberNames' => members}})
-    expect(@result['group']['memberNames']).to eq([])
-    expect(result['group']['memberNames']).to eq(members)
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, members, {'online' => false})
+    expect(@default['online']).to eq(true)
+    expect(custom['online']).to eq(false)
   end
 
   it 'can partially override the default options' do
-    result = NexusAPI::ParameterBuilder.send(method, repo_name, {'storage' => {'blobStoreName' => new_blobstore}})
-    expect(@result['storage']['blobStoreName']).to eq('default')
-    expect(@result['storage']['strictContentTypeValidation']).to eq(true)
-    expect(result['storage']['blobStoreName']).to eq(new_blobstore)
-    expect(result['storage']['strictContentTypeValidation']).to eq(true)
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, members, {'storage' => {'blobStoreName' => new_blobstore}})
+    expect(@default['storage']['blobStoreName']).to eq('default')
+    expect(@default['storage']['strictContentTypeValidation']).to eq(true)
+    expect(custom['storage']['blobStoreName']).to eq(new_blobstore)
+    expect(custom['storage']['strictContentTypeValidation']).to eq(true)
   end
 
   it 'can add new options' do
-    result = NexusAPI::ParameterBuilder.send(method, repo_name, {'newOption' => 9999})
-    expect(@result['newOption']).to be_nil
-    expect(result['newOption']).to eq(9999)
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, members, {'newOption' => 9999})
+    expect(@default['newOption']).to be_nil
+    expect(custom['newOption']).to eq(9999)
   end
 end
 
@@ -43,74 +47,74 @@ RSpec.shared_examples 'a hosted repository' do
   let(:policies) { ['policy1', 'policy2'] }
 
   before(:each) do
-    @result = NexusAPI::ParameterBuilder.send(method, repo_name, {})
+    @default = NexusAPI::ParameterBuilder.send(method, repo_name, {})
   end
 
   it 'provides default options' do
-    expect(@result).to be_a(Hash)
-    expect(@result).not_to eq({})
+    expect(@default).to be_a(Hash)
+    expect(@default).not_to eq({})
   end
 
   it 'can override the default options' do
-    result = NexusAPI::ParameterBuilder.send(method, repo_name, {'cleanup' => {'policyNames' => policies}})
-    expect(@result['cleanup']['policyNames']).to eq([])
-    expect(result['cleanup']['policyNames']).to eq(policies)
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, {'cleanup' => {'policyNames' => policies}})
+    expect(@default['cleanup']['policyNames']).to eq([])
+    expect(custom['cleanup']['policyNames']).to eq(policies)
   end
 
   it 'can partially override the default options' do
-    result = NexusAPI::ParameterBuilder.send(method, repo_name, {'storage' => {'blobStoreName' => new_blobstore}})
-    expect(@result['storage']['blobStoreName']).to eq('default')
-    expect(@result['storage']['strictContentTypeValidation']).to eq(true)
-    expect(result['storage']['blobStoreName']).to eq(new_blobstore)
-    expect(result['storage']['strictContentTypeValidation']).to eq(true)
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, {'storage' => {'blobStoreName' => new_blobstore}})
+    expect(@default['storage']['blobStoreName']).to eq('default')
+    expect(@default['storage']['strictContentTypeValidation']).to eq(true)
+    expect(custom['storage']['blobStoreName']).to eq(new_blobstore)
+    expect(custom['storage']['strictContentTypeValidation']).to eq(true)
   end
 
   it 'can add new options' do
-    result = NexusAPI::ParameterBuilder.send(method, repo_name, {'newOption' => {'result' => true}})
-    expect(@result['newOption']).to be_nil
-    expect(result['newOption']).to eq({'result' => true})
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, {'newOption' => {'result' => true}})
+    expect(@default['newOption']).to be_nil
+    expect(custom['newOption']).to eq({'result' => true})
   end
 end
 
 RSpec.shared_examples 'a proxy repository' do
-    let(:url) { 'url' }
+  let(:url) { 'url' }
 
-    before(:each) do
-      @result = NexusAPI::ParameterBuilder.send(method, repo_name, url, {})
-    end
+  before(:each) do
+    @default = NexusAPI::ParameterBuilder.send(method, repo_name, url, {})
+  end
 
-    it 'provides default options' do
-      expect(@result).to be_a(Hash)
-      expect(@result).not_to eq({})
-    end
+  it 'provides default options' do
+    expect(@default).to be_a(Hash)
+    expect(@default).not_to eq({})
+  end
 
-    it 'sets a name' do
-      expect(@result['name']).to eq(repo_name)
-    end
+  it 'sets a name' do
+    expect(@default['name']).to eq(repo_name)
+  end
 
-    it 'sets a url' do
-      expect(@result['proxy']['remoteUrl']).to eq(url)
-    end
+  it 'sets a url' do
+    expect(@default['proxy']['remoteUrl']).to eq(url)
+  end
 
-    it 'can override the default options' do
-      result = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'online' => false})
-      expect(@result['online']).to eq(true)
-      expect(result['online']).to eq(false)
-    end
+  it 'can override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'online' => false})
+    expect(@default['online']).to eq(true)
+    expect(custom['online']).to eq(false)
+  end
 
-    it 'can partially override the default options' do
-      result = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'httpClient' => {'blocked' => true}})
-      expect(@result['httpClient']['blocked']).to eq(false)
-      expect(@result['httpClient']['autoBlock']).to eq(true)
-      expect(result['httpClient']['blocked']).to eq(true)
-      expect(result['httpClient']['autoBlock']).to eq(true)
-    end
+  it 'can partially override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'httpClient' => {'blocked' => true}})
+    expect(@default['httpClient']['blocked']).to eq(false)
+    expect(@default['httpClient']['autoBlock']).to eq(true)
+    expect(custom['httpClient']['blocked']).to eq(true)
+    expect(custom['httpClient']['autoBlock']).to eq(true)
+  end
 
-    it 'can add new options' do
-      result = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'newOption' => true})
-      expect(@result['newOption']).to be_nil
-      expect(result['newOption']).to eq(true)
-    end
+  it 'can add new options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'newOption' => true})
+    expect(@default['newOption']).to be_nil
+    expect(custom['newOption']).to eq(true)
+  end
 end
 
 

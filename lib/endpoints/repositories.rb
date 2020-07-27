@@ -36,8 +36,8 @@ module NexusAPI
     # POST /service/rest/beta/repositories/conan/proxy
     # PUT /service/rest/beta/repositories/conan/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/docker/group
-    def create_repository_docker_group(name:, options: {})
-      parameters = ParameterBuilder.docker_group(name, options)
+    def create_repository_docker_group(name:, members:, options: {})
+      parameters = ParameterBuilder.docker_group(name, members, options)
       create('repositories/docker/group', parameters)
     end
 
@@ -67,8 +67,8 @@ module NexusAPI
     # POST /service/rest/beta/repositories/helm/proxy
     # PUT /service/rest/beta/repositories/helm/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/maven/group
-    def create_repository_maven_group(name:, options: {})
-      parameters = ParameterBuilder.maven_group(name, options)
+    def create_repository_maven_group(name:, members:, options: {})
+      parameters = ParameterBuilder.maven_group(name, members, options)
       create('repositories/maven/group', parameters)
     end
 
@@ -88,8 +88,8 @@ module NexusAPI
 
     # PUT /service/rest/beta/repositories/maven/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/npm/group
-    def create_repository_npm_group(name:, options: {})
-      parameters = ParameterBuilder.npm_group(name, options)
+    def create_repository_npm_group(name:, members:, options: {})
+      parameters = ParameterBuilder.npm_group(name, members, options)
       create('repositories/npm/group', parameters)
     end
 
@@ -117,8 +117,8 @@ module NexusAPI
     # POST /service/rest/beta/repositories/p2/proxy
     # PUT /service/rest/beta/repositories/p2/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/pypi/group
-    def create_repository_pypi_group(name:, options: {})
-      parameters = ParameterBuilder.pypi_group(name, options)
+    def create_repository_pypi_group(name:, members:, options: {})
+      parameters = ParameterBuilder.pypi_group(name, members, options)
       create('repositories/pypi/group', parameters)
     end
 
@@ -144,8 +144,8 @@ module NexusAPI
     # POST /service/rest/beta/repositories/r/proxy
     # PUT /service/rest/beta/repositories/r/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/raw/group
-    def create_repository_raw_group(name:, options: {})
-      parameters = ParameterBuilder.raw_group(name, options)
+    def create_repository_raw_group(name:, members:, options: {})
+      parameters = ParameterBuilder.raw_group(name, members, options)
       create('repositories/raw/group', parameters)
     end
 
@@ -165,8 +165,8 @@ module NexusAPI
 
     # PUT /service/rest/beta/repositories/raw/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/rubygems/group
-    def create_repository_rubygems_group(name:, options: {})
-      parameters = ParameterBuilder.rubygems_group(name, options)
+    def create_repository_rubygems_group(name:, members:, options: {})
+      parameters = ParameterBuilder.rubygems_group(name, members, options)
       create('repositories/rubygems/group', parameters)
     end
 
@@ -186,8 +186,8 @@ module NexusAPI
 
     # PUT /service/rest/beta/repositories/rubygems/proxy/{repositoryName}
     # POST /service/rest/beta/repositories/yum/group
-    def create_repository_yum_group(name:, options: {})
-      parameters = ParameterBuilder.yum_group(name, options)
+    def create_repository_yum_group(name:, members:, options: {})
+      parameters = ParameterBuilder.yum_group(name, members, options)
       create('repositories/yum/group', parameters)
     end
 

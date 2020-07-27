@@ -1,26 +1,22 @@
 module NexusAPI
   class ParameterBuilder
-    def self.docker_group(name, options)
-      # TODO: Check this method
+    def self.docker_group(name, members, options)
       default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {
-          'memberNames' => []
-        },
         'docker' => {
           'v1Enabled' => false,
           'forceBasicAuth' => true
-        }
+        },
+        'group' => {}
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name, members: members)
     end
 
     def self.docker_hosted(name, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -36,7 +32,7 @@ module NexusAPI
           'forceBasicAuth' => true
         }
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name)
     end
 
     def self.docker_proxy(name, remote_url, options)
@@ -66,26 +62,22 @@ module NexusAPI
           'indexType' => 'REGISTRY'
         }
       }
-      apply_changes(default_options, options, name, remote_url)
+      apply_changes(default: default_options, override: options, name: name, url: remote_url)
     end
 
-    def self.maven_group(name, options)
-      # TODO: Check this method
+    def self.maven_group(name, members, options)
       default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {
-          'memberNames' => []
-        }
+        'group' => {}
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name, members: members)
     end
 
     def self.maven_hosted(name, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -101,11 +93,10 @@ module NexusAPI
           'layoutPolicy' => 'STRICT'
         }
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name)
     end
 
     def self.maven_proxy(name, remote_url, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -126,46 +117,28 @@ module NexusAPI
         'httpClient' => {
           'blocked' => false,
           'autoBlock' => true,
-          # 'connection' => {
-          #   'retries' => 0,
-          #   'userAgentSuffix' => 'string',
-          #   'timeout' => 60,
-          #   'enableCircularRedirects' => false,
-          #   'enableCookies' => false
-          # },
-          # 'authentication' => {
-          #   'type' => 'username',
-          #   'username' => 'string',
-          #   'ntlmHost' => 'string',
-          #   'ntlmDomain' => 'string'
-          # }
         },
-        # 'routingRule' => 'string',
         'maven' => {
           'versionPolicy' => 'RELEASE',
           'layoutPolicy' => 'STRICT'
         }
       }
-      apply_changes(default_options, options, name, remote_url)
+      apply_changes(default: default_options, override: options, name: name, url: remote_url)
     end
 
-    def self.npm_group(name, options)
-      # TODO: Check this method
+    def self.npm_group(name, members, options)
       default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {
-          'memberNames' => []
-        }
+        'group' => {}
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name, members: members)
     end
 
     def self.npm_hosted(name, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -177,11 +150,10 @@ module NexusAPI
           'policyNames' => []
         }
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name)
     end
 
     def self.npm_proxy(name, remote_url, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -202,42 +174,24 @@ module NexusAPI
         'httpClient' => {
           'blocked' => false,
           'autoBlock' => true,
-          # 'connection' => {
-          #   'retries' => 0,
-          #   'userAgentSuffix' => 'string',
-          #   'timeout' => 60,
-          #   'enableCircularRedirects' => false,
-          #   'enableCookies' => false
-          # },
-          # 'authentication' => {
-          #   'type' => 'username',
-          #   'username' => 'string',
-          #   'ntlmHost' => 'string',
-          #   'ntlmDomain' => 'string'
-          # }
         },
-        # 'routingRule' => 'string'
       }
-      apply_changes(default_options, options, name, remote_url)
+      apply_changes(default: default_options, override: options, name: name, url: remote_url)
     end
 
-    def self.pypi_group(name, options)
-      # TODO: Check this method
+    def self.pypi_group(name, members, options)
       default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {
-          'memberNames' => []
-        }
+        'group' => {}
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name, members: members)
     end
 
     def self.pypi_hosted(name, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -249,11 +203,10 @@ module NexusAPI
           'policyNames' => []
         }
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name)
     end
 
     def self.pypi_proxy(name, remote_url, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -274,42 +227,24 @@ module NexusAPI
         'httpClient' => {
           'blocked' => false,
           'autoBlock' => true,
-          # 'connection' => {
-          #   'retries' => 0,
-          #   'userAgentSuffix' => 'string',
-          #   'timeout' => 60,
-          #   'enableCircularRedirects' => false,
-          #   'enableCookies' => false
-          # },
-          # 'authentication' => {
-          #   'type' => 'username',
-          #   'username' => 'string',
-          #   'ntlmHost' => 'string',
-          #   'ntlmDomain' => 'string'
-          # }
         },
-        # 'routingRule' => 'string'
       }
-      apply_changes(default_options, options, name, remote_url)
+      apply_changes(default: default_options, override: options, name: name, url: remote_url)
     end
 
-    def self.raw_group(name, options)
-      # TODO: Check this method
+    def self.raw_group(name, members, options)
       default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {
-          'memberNames' => []
-        }
+        'group' => {}
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name, members: members)
     end
 
     def self.raw_hosted(name, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -321,11 +256,10 @@ module NexusAPI
           'policyNames' => []
         }
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name)
     end
 
     def self.raw_proxy(name, remote_url, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -346,42 +280,24 @@ module NexusAPI
         'httpClient' => {
           'blocked' => false,
           'autoBlock' => true,
-          # 'connection' => {
-          #   'retries' => 0,
-          #   'userAgentSuffix' => 'string',
-          #   'timeout' => 60,
-          #   'enableCircularRedirects' => false,
-          #   'enableCookies' => false
-          # },
-          # 'authentication' => {
-          #   'type' => 'username',
-          #   'username' => 'string',
-          #   'ntlmHost' => 'string',
-          #   'ntlmDomain' => 'string'
-          # }
-        },
-        # 'routingRule': 'string'
+        }
       }
-      apply_changes(default_options, options, name, remote_url)
+      apply_changes(default: default_options, override: options, name: name, url: remote_url)
     end
 
-    def self.rubygems_group(name, options)
-      # TODO: Check this method
+    def self.rubygems_group(name, members, options)
       default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {
-          'memberNames' => []
-        }
+        'group' => {}
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name, members: members)
     end
 
     def self.rubygems_hosted(name, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -393,11 +309,10 @@ module NexusAPI
           'policyNames' => []
         }
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name)
     end
 
     def self.rubygems_proxy(name, remote_url, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -418,42 +333,24 @@ module NexusAPI
         'httpClient' => {
           'blocked' => false,
           'autoBlock' => true,
-          # 'connection' => {
-          #   'retries' => 0,
-          #   'userAgentSuffix' => 'string',
-          #   'timeout' => 60,
-          #   'enableCircularRedirects' => false,
-          #   'enableCookies' => false
-          # },
-          # 'authentication' => {
-          #   'type' => 'username',
-          #   'username' => 'string',
-          #   'ntlmHost' => 'string',
-          #   'ntlmDomain' => 'string'
-          # }
         },
-        # 'routingRule' => 'string'
       }
-      apply_changes(default_options, options, name, remote_url)
+      apply_changes(default: default_options, override: options, name: name, url: remote_url)
     end
 
-    def self.yum_group(name, options)
-      # TODO: Check this method
+    def self.yum_group(name, members, options)
       default_options = {
         'online' => true,
         'storage' => {
           'blobStoreName' => 'default',
           'strictContentTypeValidation' => true
         },
-        'group' => {
-          'memberNames' => []
-        }
+        'group' => {}
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name, members: members)
     end
 
     def self.yum_hosted(name, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -469,11 +366,10 @@ module NexusAPI
           'deployPolicy' => 'STRICT'
         }
       }
-      apply_changes(default_options, options, name)
+      apply_changes(default: default_options, override: options, name: name)
     end
 
     def self.yum_proxy(name, remote_url, options)
-      # TODO: Check this method
       default_options = {
         'online' => true,
         'storage' => {
@@ -494,23 +390,9 @@ module NexusAPI
         'httpClient' => {
           'blocked' => false,
           'autoBlock' => true,
-          # 'connection' => {
-          #   'retries' => 0,
-          #   'userAgentSuffix' => 'string',
-          #   'timeout' => 60,
-          #   'enableCircularRedirects' => false,
-          #   'enableCookies' => false
-          # },
-          # 'authentication' => {
-          #   'type' => 'username',
-          #   'username' => 'string',
-          #   'ntlmHost' => 'string',
-          #   'ntlmDomain' => 'string'
-          # }
         },
-        # 'routingRule' => 'string'
       }
-      apply_changes(default_options, options, name, remote_url)
+      apply_changes(default: default_options, override: options, name: name, url: remote_url)
     end
 
 
@@ -539,10 +421,11 @@ module NexusAPI
       return full_hash
     end
 
-    def self.apply_changes(default_options, options, name, url=nil)
-      options = deep_merge(default_options, options)
+    def self.apply_changes(default:, override:, name:, url: nil, members: nil)
+      options = deep_merge(default, override)
       options['name'] = name
       options['proxy']['remoteUrl'] = url unless url.nil?
+      options['group']['memberNames'] = members unless members.nil?
       return options
     end
   end
