@@ -69,100 +69,107 @@ api = NexusAPI::API.new(
 # You can create various types of repositories in different formats
 api.create_repository_docker_group(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  members: REPOSITORY_MEMBERS,
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_docker_hosted(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_docker_proxy(
   name: REPOSITORY_NAME,
   remote_url: URL_TO_PROXY,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 
 api.create_repository_maven_group(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  members: REPOSITORY_MEMBERS,
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_maven_hosted(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_maven_proxy(
   name: REPOSITORY_NAME,
   remote_url: URL_TO_PROXY,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 
 api.create_repository_npm_group(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  members: REPOSITORY_MEMBERS,
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_npm_hosted(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_npm_proxy(
   name: REPOSITORY_NAME,
   remote_url: URL_TO_PROXY,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 
 api.create_repository_pypi_group(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  members: REPOSITORY_MEMBERS,
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_pypi_hosted(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_pypi_proxy(
   name: REPOSITORY_NAME,
   remote_url: URL_TO_PROXY,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 
 api.create_repository_raw_group(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  members: REPOSITORY_MEMBERS,
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_raw_hosted(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_raw_proxy(
   name: REPOSITORY_NAME,
   remote_url: URL_TO_PROXY,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 
 api.create_repository_rubygems_group(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  members: REPOSITORY_MEMBERS,
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_rubygems_hosted(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_rubygems_proxy(
   name: REPOSITORY_NAME,
   remote_url: URL_TO_PROXY,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 
 api.create_repository_yum_group(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  members: REPOSITORY_MEMBERS,
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_yum_hosted(
   name: REPOSITORY_NAME,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 api.create_repository_yum_proxy(
   name: REPOSITORY_NAME,
   remote_url: URL_TO_PROXY,
-  options: HASH_OF_REPOSITORY_OPTIONS
+  options: HASH_OF_REPOSITORY_OPTIONS  # Optional
 )
 
 
