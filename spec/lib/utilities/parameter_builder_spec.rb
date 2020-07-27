@@ -1,134 +1,257 @@
 require 'utilities/parameter_builder'
 
-RSpec.shared_examples 'a base parameter set' do
-  it 'configures a name' do
-    expect(parameters['name']).to eq(repo_name)
+RSpec.shared_examples 'a group repository' do
+  let(:new_blobstore) { 'not_default' }
+  let(:members) { ['member1', 'member2'] }
+
+  before(:each) do
+    @default = NexusAPI::ParameterBuilder.send(method, repo_name, members, {})
   end
 
-  it 'uses an allow_once policy by default' do
-    expect(parameters['storage']['writePolicy']).to eq(allow_once)
+  it 'provides default options' do
+    expect(@default).to be_a(Hash)
+    expect(@default).not_to eq({})
   end
 
-  it 'configures a write policy' do
-    expect(overloaded_parameters['storage']['writePolicy']).to eq(policy)
+  it 'sets a name' do
+    expect(@default['name']).to eq(repo_name)
+  end
+
+  it 'sets group members' do
+    expect(@default['group']['memberNames']).to eq(members)
+  end
+
+  it 'can override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, members, {'online' => false})
+    expect(@default['online']).to eq(true)
+    expect(custom['online']).to eq(false)
+  end
+
+  it 'can partially override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, members, {'storage' => {'blobStoreName' => new_blobstore}})
+    expect(@default['storage']['blobStoreName']).to eq('default')
+    expect(@default['storage']['strictContentTypeValidation']).to eq(true)
+    expect(custom['storage']['blobStoreName']).to eq(new_blobstore)
+    expect(custom['storage']['strictContentTypeValidation']).to eq(true)
+  end
+
+  it 'can add new options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, members, {'newOption' => 9999})
+    expect(@default['newOption']).to be_nil
+    expect(custom['newOption']).to eq(9999)
   end
 end
 
+RSpec.shared_examples 'a hosted repository' do
+  let(:new_blobstore) { 'not_default' }
+  let(:policies) { ['policy1', 'policy2'] }
+
+  before(:each) do
+    @default = NexusAPI::ParameterBuilder.send(method, repo_name, {})
+  end
+
+  it 'provides default options' do
+    expect(@default).to be_a(Hash)
+    expect(@default).not_to eq({})
+  end
+
+  it 'can override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, {'cleanup' => {'policyNames' => policies}})
+    expect(@default['cleanup']['policyNames']).to eq([])
+    expect(custom['cleanup']['policyNames']).to eq(policies)
+  end
+
+  it 'can partially override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, {'storage' => {'blobStoreName' => new_blobstore}})
+    expect(@default['storage']['blobStoreName']).to eq('default')
+    expect(@default['storage']['strictContentTypeValidation']).to eq(true)
+    expect(custom['storage']['blobStoreName']).to eq(new_blobstore)
+    expect(custom['storage']['strictContentTypeValidation']).to eq(true)
+  end
+
+  it 'can add new options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, {'newOption' => {'result' => true}})
+    expect(@default['newOption']).to be_nil
+    expect(custom['newOption']).to eq({'result' => true})
+  end
+end
+
+RSpec.shared_examples 'a proxy repository' do
+  let(:url) { 'url' }
+
+  before(:each) do
+    @default = NexusAPI::ParameterBuilder.send(method, repo_name, url, {})
+  end
+
+  it 'provides default options' do
+    expect(@default).to be_a(Hash)
+    expect(@default).not_to eq({})
+  end
+
+  it 'sets a name' do
+    expect(@default['name']).to eq(repo_name)
+  end
+
+  it 'sets a url' do
+    expect(@default['proxy']['remoteUrl']).to eq(url)
+  end
+
+  it 'can override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'online' => false})
+    expect(@default['online']).to eq(true)
+    expect(custom['online']).to eq(false)
+  end
+
+  it 'can partially override the default options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'httpClient' => {'blocked' => true}})
+    expect(@default['httpClient']['blocked']).to eq(false)
+    expect(@default['httpClient']['autoBlock']).to eq(true)
+    expect(custom['httpClient']['blocked']).to eq(true)
+    expect(custom['httpClient']['autoBlock']).to eq(true)
+  end
+
+  it 'can add new options' do
+    custom = NexusAPI::ParameterBuilder.send(method, repo_name, url, {'newOption' => true})
+    expect(@default['newOption']).to be_nil
+    expect(custom['newOption']).to eq(true)
+  end
+end
+
+
+
 RSpec.describe NexusAPI::ParameterBuilder do
-  let(:allow_once) { NexusAPI::ParameterBuilder::ALLOW_ONCE }
-  let(:release) { NexusAPI::ParameterBuilder::RELEASE }
-  let(:strict) { NexusAPI::ParameterBuilder::STRICT }
   let(:repo_name) { 'repo_name' }
-  let(:policy) { 'policy' }
+
+  # Docker
+  describe '.docker_group' do
+    it_behaves_like 'a group repository' do
+      let(:method) { :docker_group }
+    end
+  end
 
   describe '.docker_hosted' do
-    let(:port) { '123' }
-
-    it_behaves_like 'a base parameter set' do
-      let(:parameters) { NexusAPI::ParameterBuilder.docker_hosted(repo_name, port) }
-      let(:overloaded_parameters) do
-        NexusAPI::ParameterBuilder.docker_hosted(repo_name, port, write_policy: policy)
-      end
+    it_behaves_like 'a hosted repository' do
+      let(:method) { :docker_hosted }
     end
+  end
 
-    it 'configures an HTTPS port' do
-      parameters = NexusAPI::ParameterBuilder.docker_hosted(repo_name, port)
-      expect(parameters['docker']['httpPort']).to eq(port)
+  describe '.docker_proxy' do
+    it_behaves_like 'a proxy repository' do
+      let(:method) { :docker_proxy }
+    end
+  end
+
+  # Maven
+  describe '.maven_group' do
+    it_behaves_like 'a group repository' do
+      let(:method) { :maven_group }
     end
   end
 
   describe '.maven_hosted' do
-    it_behaves_like 'a base parameter set' do
-      let(:parameters) { NexusAPI::ParameterBuilder.maven_hosted(repo_name) }
-      let(:overloaded_parameters) do
-        NexusAPI::ParameterBuilder.maven_hosted(repo_name, write_policy: policy)
-      end
+    it_behaves_like 'a hosted repository' do
+      let(:method) { :maven_hosted }
     end
+  end
 
-    before(:each) do
-      @parameters = NexusAPI::ParameterBuilder.maven_hosted(repo_name)
+  describe '.maven_proxy' do
+    it_behaves_like 'a proxy repository' do
+      let(:method) { :maven_proxy }
     end
+  end
 
-    it 'uses a release policy by default' do
-      expect(@parameters['maven']['versionPolicy']).to eq(release)
-    end
-
-    it 'uses a strict policy by default' do
-      expect(@parameters['maven']['layoutPolicy']).to eq(strict)
-    end
-
-    it 'configures a version policy' do
-      parameters = NexusAPI::ParameterBuilder.maven_hosted(repo_name, version_policy: policy)
-      expect(parameters['maven']['versionPolicy']).to eq(policy)
-    end
-
-    it 'configures a layout policy' do
-      parameters = NexusAPI::ParameterBuilder.maven_hosted(repo_name, layout_policy: policy)
-      expect(parameters['maven']['layoutPolicy']).to eq(policy)
+  # NPM
+  describe '.npm_group' do
+    it_behaves_like 'a group repository' do
+      let(:method) { :npm_group }
     end
   end
 
   describe '.npm_hosted' do
-    it_behaves_like 'a base parameter set' do
-      let(:parameters) { NexusAPI::ParameterBuilder.npm_hosted(repo_name) }
-      let(:overloaded_parameters) do
-        NexusAPI::ParameterBuilder.npm_hosted(repo_name, write_policy: policy)
-      end
+    it_behaves_like 'a hosted repository' do
+      let(:method) { :npm_hosted }
+    end
+  end
+
+  describe '.npm_proxy' do
+    it_behaves_like 'a proxy repository' do
+      let(:method) { :npm_proxy }
+    end
+  end
+
+  # Pypi
+  describe '.pypi_group' do
+    it_behaves_like 'a group repository' do
+      let(:method) { :pypi_group }
     end
   end
 
   describe '.pypi_hosted' do
-    it_behaves_like 'a base parameter set' do
-      let(:parameters) { NexusAPI::ParameterBuilder.pypi_hosted(repo_name) }
-      let(:overloaded_parameters) do
-        NexusAPI::ParameterBuilder.pypi_hosted(repo_name, write_policy: policy)
-      end
+    it_behaves_like 'a hosted repository' do
+      let(:method) { :pypi_hosted }
+    end
+  end
+
+  describe '.pypi_proxy' do
+    it_behaves_like 'a proxy repository' do
+      let(:method) { :pypi_proxy }
+    end
+  end
+
+  # Raw
+  describe '.raw_group' do
+    it_behaves_like 'a group repository' do
+      let(:method) { :raw_group }
     end
   end
 
   describe '.raw_hosted' do
-    it_behaves_like 'a base parameter set' do
-      let(:parameters) { NexusAPI::ParameterBuilder.raw_hosted(repo_name) }
-      let(:overloaded_parameters) do
-        NexusAPI::ParameterBuilder.raw_hosted(repo_name, write_policy: policy)
-      end
+    it_behaves_like 'a hosted repository' do
+      let(:method) { :raw_hosted }
+    end
+  end
+
+  describe '.raw_proxy' do
+    it_behaves_like 'a proxy repository' do
+      let(:method) { :raw_proxy }
+    end
+  end
+
+  # Rubygems
+  describe '.rubygems_group' do
+    it_behaves_like 'a group repository' do
+      let(:method) { :rubygems_group }
     end
   end
 
   describe '.rubygems_hosted' do
-    it_behaves_like 'a base parameter set' do
-      let(:parameters) { NexusAPI::ParameterBuilder.rubygems_hosted(repo_name) }
-      let(:overloaded_parameters) do
-        NexusAPI::ParameterBuilder.rubygems_hosted(repo_name, write_policy: policy)
-      end
+    it_behaves_like 'a hosted repository' do
+      let(:method) { :rubygems_hosted }
+    end
+  end
+
+  describe '.rubygems_proxy' do
+    it_behaves_like 'a proxy repository' do
+      let(:method) { :rubygems_proxy }
+    end
+  end
+
+  # Yum
+  describe '.yum_group' do
+    it_behaves_like 'a group repository' do
+      let(:method) { :yum_group }
     end
   end
 
   describe '.yum_hosted' do
-    let(:depth) { 1 }
-
-    it_behaves_like 'a base parameter set' do
-      let(:parameters) { NexusAPI::ParameterBuilder.yum_hosted(repo_name, depth) }
-      let(:overloaded_parameters) do
-        NexusAPI::ParameterBuilder.yum_hosted(repo_name, depth, write_policy: policy)
-      end
+    it_behaves_like 'a hosted repository' do
+      let(:method) { :yum_hosted }
     end
+  end
 
-    before(:each) do
-      @parameters = NexusAPI::ParameterBuilder.yum_hosted(repo_name, depth)
-    end
-
-    it 'configures a repodata depth' do
-      expect(@parameters['yum']['repodataDepth']).to eq(depth)
-    end
-
-    it 'uses a strict policy by default' do
-      expect(@parameters['yum']['deployPolicy']).to eq(strict)
-    end
-
-    it 'configures a deploy policy' do
-      parameters = NexusAPI::ParameterBuilder.yum_hosted(repo_name, depth, deploy_policy: policy)
-      expect(parameters['yum']['deployPolicy']).to eq(policy)
+  describe '.yum_proxy' do
+    it_behaves_like 'a proxy repository' do
+      let(:method) { :yum_proxy }
     end
   end
 end
