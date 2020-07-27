@@ -207,7 +207,6 @@ api.search_all_assets(
   repository: REPOSITORY_NAME,  # Optional
   sha1: SHA1,                   # Optional
   version: VERSION,             # Optional
-  paginate: BOOLEAN             # Optional
 )
 # You can also paginate through the results if you want to do some additional filtering
 api.search_asset(
