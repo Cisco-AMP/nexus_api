@@ -18,8 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Changed
-- Method signature for `NexusAPI::API.create_repository_docker_group()`
 - Method signature for `NexusAPI::API.create_repository_docker_hosted()`
+- Method signature for `NexusAPI::API.create_repository_maven_hosted()`
+- Method signature for `NexusAPI::API.create_repository_npm_hosted()`
+- Method signature for `NexusAPI::API.create_repository_pypi_hosted()`
+- Method signature for `NexusAPI::API.create_repository_raw_hosted()`
+- Method signature for `NexusAPI::API.create_repository_rubygems_hosted()`
+- Method signature for `NexusAPI::API.create_repository_yum_hosted()`
 
 
 ## [1.6.1](https://github.com/Cisco-AMP/nexus_api/compare/v1.6.0...v1.6.1) - 2020-07-20
