@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.1](https://github.com/Cisco-AMP/nexus_api/compare/v2.0.0...v2.0.1) - 2020-09-08
+### Security
+- Use `rake` version `12.3.3` or later to avoid an [OS Command Injection](https://github.com/advisories/GHSA-jppv-gw3r-w3q8)
+
+
 ## [2.0.0](https://github.com/Cisco-AMP/nexus_api/compare/v1.6.1...v2.0.0) - 2020-07-27
 ### Added
 - Fully implemented create methods for group, hosted, and proxy type repository in the following formats:
