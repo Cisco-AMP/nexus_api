@@ -6,7 +6,7 @@ module NexusAPI
     end
 
     def list_all_tags
-      tags = Array.new.tap do |tags|
+      Array.new.tap do |tags|
         loop do
           tags.concat(list_tags(paginate: true))
           break unless paginate?

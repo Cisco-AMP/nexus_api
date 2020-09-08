@@ -7,7 +7,7 @@ module NexusAPI
     end
 
     def list_all_assets(repository: nil)
-      assets = Array.new.tap do |assets|
+      Array.new.tap do |assets|
         loop do
           assets.concat(list_assets(repository: repository, paginate: true))
           break unless paginate?

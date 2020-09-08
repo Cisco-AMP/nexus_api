@@ -7,7 +7,7 @@ module NexusAPI
     end
 
     def list_all_components(repository: nil)
-      components = Array.new.tap do |components|
+      Array.new.tap do |components|
         loop do
           components.concat(list_components(repository: repository, paginate: true))
           break unless paginate?
