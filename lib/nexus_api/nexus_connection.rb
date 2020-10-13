@@ -9,10 +9,11 @@ module NexusAPI
     
     attr_accessor :continuation_token
 
-    def initialize(username:, password:, hostname:)
+    def initialize(username:, password:, hostname:, protocol:)
       @username = username
       @password = password
       @hostname = hostname
+      @protocol = protocol
     end
 
     def get_response(endpoint:, paginate: false, headers: {'Content-Type' => 'application/json'}, api_version: 'v1')
@@ -117,7 +118,7 @@ module NexusAPI
 
     def send_request(connection_method, endpoint, parameters: '', headers: {}, api_version: 'v1')
       parameters = parameters.to_json if headers['Content-Type'] == 'application/json'
-      url = "https://#{@hostname}/service/rest/#{api_version}/#{endpoint}"
+      url = "#{@protocol}://#{@hostname}/service/rest/#{api_version}/#{endpoint}"
       catch_connection_error do
         RestClient::Request.execute(
           method:  connection_method,

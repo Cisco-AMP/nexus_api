@@ -17,11 +17,12 @@ module NexusAPI
 
     TEAM_CONFIG = File.join(File.dirname(__dir__), 'team_configs/default.yaml').freeze
 
-    def initialize(username:, password:, hostname:, docker_pull_hostname: nil, docker_push_hostname: nil, team_config: nil)
+    def initialize(username:, password:, hostname:, docker_pull_hostname: nil, docker_push_hostname: nil, team_config: nil, protocol: "https")
       @connection = NexusAPI::NexusConnection.new(
         username: username,
         password: password,
         hostname: hostname,
+        protocol: protocol,
       )
       if docker_pull_hostname.nil? || docker_push_hostname.nil?
         @docker = nil
