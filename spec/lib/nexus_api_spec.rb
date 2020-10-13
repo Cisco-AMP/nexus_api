@@ -4,6 +4,10 @@ RSpec.describe NexusAPI do
   describe 'API' do
     include_context 'setup NexusAPI::API'
 
+    it 'uses https as the default protocol' do
+      expect(api.protocol).to eq('https')
+    end
+
     it 'has a default config to read from' do
       expect(File.exist?(NexusAPI::API::TEAM_CONFIG)).to be(true)
     end
@@ -190,6 +194,23 @@ RSpec.describe NexusAPI do
         expect(api.connection).to receive(:paginate?)
         api.paginate?
       end
+    end
+  end
+
+
+  describe 'API with a custom protocol' do
+    let(:protocol) { 'custom' }
+    let(:api) do
+      NexusAPI::API.new(
+        username: 'username',
+        password: 'password',
+        hostname: HOSTNAME,
+        protocol: protocol,
+      )
+    end
+
+    it 'uses the custom protocol' do
+      expect(api.protocol).to eq('custom')
     end
   end
 end

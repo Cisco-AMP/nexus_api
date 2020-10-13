@@ -7,7 +7,7 @@ RSpec.describe NexusAPI do
     let(:tag) { 'imatag' }
     let(:repository) { 'repository' }
     let(:team_config) { double }
-    let(:upstream_filename) { 'local_file' }
+    let(:upstream_filename) { 'new_name' }
     let(:file_read_mode)    { 'r' }
     before(:each) { api.team_config = team_config }
 
@@ -174,7 +174,6 @@ RSpec.describe NexusAPI do
     describe '#upload_pypi_component' do
       let(:repository)        { 'pypi-hosted' }
       let(:filename)          { "./spec/test_files/hound-dog-0.1.whl" }
-      let(:upstream_filename) { 'local_file' }
 
       def expect_post_with_pypi_parameters(tag: false, use_upstream_filename: false)
         file = double
