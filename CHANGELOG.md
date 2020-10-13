@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.0](https://github.com/Cisco-AMP/nexus_api/compare/v2.0.1...v2.1.0) - 2020-10-13
 ### Added
 - The ability to override HTTPS as the connection protocol for testing purposes
-- The ability to specify a component name that differs from the local file on disk
+- The ability to specify a component name during upload that differs from the local file on disk
 
 
 ## [2.0.1](https://github.com/Cisco-AMP/nexus_api/compare/v2.0.0...v2.0.1) - 2020-09-08
