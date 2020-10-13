@@ -7,6 +7,8 @@ RSpec.describe NexusAPI do
     let(:tag) { 'imatag' }
     let(:repository) { 'repository' }
     let(:team_config) { double }
+    let(:upstream_filename) { 'local_file' }
+    let(:file_read_mode)    { 'r' }
     before(:each) { api.team_config = team_config }
 
 
@@ -65,9 +67,13 @@ RSpec.describe NexusAPI do
       let(:version)     { '0.0.1' }
       let(:filename)    { 'maven_file' }
 
-      def expect_post_with_maven_parameters(tag: false)
+      def expect_post_with_maven_parameters(tag: false, use_upstream_filename: false)
         file = double
-        expect(File).to receive(:open).and_return(file)
+        if use_upstream_filename
+          expect(File).to receive(:open).with(upstream_filename, file_read_mode).and_return(file)
+        else
+          expect(File).to receive(:open).with(filename, file_read_mode).and_return(file)
+        end
         parameters = {
           'maven2.artifactId'=>instance_of(String),
           'maven2.asset1'=>file,
@@ -106,6 +112,11 @@ RSpec.describe NexusAPI do
         expect_post_with_maven_parameters(tag: true)
         api.upload_maven_component(filename: filename, group_id: group_id, artifact_id: artifact_id, version: version, repository: repository, tag: tag)
       end
+
+      it 'uses the upstream filename when specified' do
+        expect_post_with_maven_parameters(use_upstream_filename: true)
+        api.upload_maven_component(filename: filename, group_id: group_id, artifact_id: artifact_id, version: version, repository: repository, upstream_filename: upstream_filename)
+      end
     end
 
 
@@ -113,9 +124,13 @@ RSpec.describe NexusAPI do
       let(:repository) { 'amp-npm-hosted' }
       let(:filename)   { 'npm_file' }
 
-      def expect_post_with_npm_parameters(tag: false)
+      def expect_post_with_npm_parameters(tag: false, use_upstream_filename: false)
         file = double
-        expect(File).to receive(:open).and_return(file)
+        if use_upstream_filename
+          expect(File).to receive(:open).with(upstream_filename, file_read_mode).and_return(file)
+        else
+          expect(File).to receive(:open).with(filename, file_read_mode).and_return(file)
+        end
         parameters = { 'npm.asset'=>file }
         parameters['npm.tag'] = instance_of(String) if tag
         expect(api.connection).to receive(:post).with(endpoint: "components?repository=#{repository}", parameters: parameters, headers: {})
@@ -148,16 +163,26 @@ RSpec.describe NexusAPI do
         expect_post_with_npm_parameters(tag: true)
         api.upload_npm_component(filename: filename, repository: repository, tag: tag)
       end
+
+      it 'uses the upstream filename when specified' do
+        expect_post_with_npm_parameters(use_upstream_filename: true)
+        api.upload_npm_component(filename: filename, repository: repository, upstream_filename: upstream_filename)
+      end
     end
 
 
     describe '#upload_pypi_component' do
-      let(:repository) { 'pypi-hosted' }
-      let(:filename)   { "./spec/test_files/hound-dog-0.1.whl" }
+      let(:repository)        { 'pypi-hosted' }
+      let(:filename)          { "./spec/test_files/hound-dog-0.1.whl" }
+      let(:upstream_filename) { 'local_file' }
 
-      def expect_post_with_pypi_parameters(tag: false)
+      def expect_post_with_pypi_parameters(tag: false, use_upstream_filename: false)
         file = double
-        expect(File).to receive(:open).and_return(file)
+        if use_upstream_filename
+          expect(File).to receive(:open).with(upstream_filename, file_read_mode).and_return(file)
+        else
+          expect(File).to receive(:open).with(filename, file_read_mode).and_return(file)
+        end
         parameters = { 'pypi.asset'=>file }
         parameters['pypi.tag'] = instance_of(String) if tag
         expect(api.connection).to receive(:post).with(endpoint: "components?repository=#{repository}", parameters: parameters, headers: {})
@@ -190,6 +215,11 @@ RSpec.describe NexusAPI do
         expect_post_with_pypi_parameters(tag: true)
         api.upload_pypi_component(filename: filename, repository: repository, tag: tag)
       end
+
+      it 'uses the upstream filename when specified' do
+        expect_post_with_pypi_parameters(use_upstream_filename: true)
+        api.upload_pypi_component(filename: filename, repository: repository, upstream_filename: upstream_filename)
+      end
     end
 
 
@@ -198,9 +228,13 @@ RSpec.describe NexusAPI do
       let(:directory)  { 'test/directory/structure' }
       let(:filename)   { "./spec/test_files/trash.jpg" }
 
-      def expect_post_with_raw_parameters(tag: false)
+      def expect_post_with_raw_parameters(tag: false, use_upstream_filename: false)
         file = double
-        expect(File).to receive(:open).and_return(file)
+        if use_upstream_filename
+          expect(File).to receive(:open).with(upstream_filename, file_read_mode).and_return(file)
+        else
+          expect(File).to receive(:open).with(filename, file_read_mode).and_return(file)
+        end
         parameters = {
           'raw.directory'=>instance_of(String),
           'raw.asset1'=>file,
@@ -237,6 +271,11 @@ RSpec.describe NexusAPI do
         expect_post_with_raw_parameters(tag: true)
         api.upload_raw_component(filename: filename, directory: directory, repository: repository, tag: tag)
       end
+
+      it 'uses the upstream filename when specified' do
+        expect_post_with_raw_parameters(use_upstream_filename: true)
+        api.upload_raw_component(filename: filename, directory: directory, repository: repository, upstream_filename: upstream_filename)
+      end
     end
 
 
@@ -244,9 +283,13 @@ RSpec.describe NexusAPI do
       let(:repository) { 'hosted-gems' }
       let(:filename)   { "./spec/test_files/flight_check-0.0.2.gem" }
 
-      def expect_post_with_rubygems_parameters(tag: false)
+      def expect_post_with_rubygems_parameters(tag: false, use_upstream_filename: false)
         file = double
-        expect(File).to receive(:open).and_return(file)
+        if use_upstream_filename
+          expect(File).to receive(:open).with(upstream_filename, file_read_mode).and_return(file)
+        else
+          expect(File).to receive(:open).with(filename, file_read_mode).and_return(file)
+        end
         parameters = { 'rubygems.asset'=>file }
         parameters['rubygems.tag'] = instance_of(String) if tag
         expect(api.connection).to receive(:post).with(endpoint: "components?repository=#{repository}", parameters: parameters, headers: {})
@@ -279,6 +322,11 @@ RSpec.describe NexusAPI do
         expect_post_with_rubygems_parameters(tag: true)
         api.upload_rubygems_component(filename: filename, repository: repository, tag: tag)
       end
+
+      it 'uses the upstream filename when specified' do
+        expect_post_with_rubygems_parameters(use_upstream_filename: true)
+        api.upload_rubygems_component(filename: filename, repository: repository, upstream_filename: upstream_filename)
+      end
     end
 
 
@@ -287,9 +335,13 @@ RSpec.describe NexusAPI do
       let(:directory)  { 'test/directory/structure' }
       let(:filename)   { "./spec/test_files/ebtables-2.0.10-16.el7.x86_64.rpm" }
 
-      def expect_post_with_yum_parameters(tag: false)
+      def expect_post_with_yum_parameters(tag: false, use_upstream_filename: false)
         file = double
-        expect(File).to receive(:open).and_return(file)
+        if use_upstream_filename
+          expect(File).to receive(:open).with(upstream_filename, file_read_mode).and_return(file)
+        else
+          expect(File).to receive(:open).with(filename, file_read_mode).and_return(file)
+        end
         parameters = {
           'yum.directory'=>instance_of(String),
           'yum.asset'=>file,
@@ -325,6 +377,11 @@ RSpec.describe NexusAPI do
       it 'adds a tag to the parameter list when specified' do
         expect_post_with_yum_parameters(tag: true)
         api.upload_yum_component(filename: filename, directory: directory, repository: repository, tag: tag)
+      end
+
+      it 'uses the upstream filename when specified' do
+        expect_post_with_yum_parameters(use_upstream_filename: true)
+        api.upload_yum_component(filename: filename, directory: directory, repository: repository, upstream_filename: upstream_filename)
       end
     end
 
