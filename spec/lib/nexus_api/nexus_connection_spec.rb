@@ -13,6 +13,7 @@ RSpec.describe NexusAPI::NexusConnection do
       username: 'username',
       password: 'password',
       hostname: HOSTNAME,
+      protocol: 'https'
     )
   end
 

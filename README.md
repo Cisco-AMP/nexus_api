@@ -253,8 +253,8 @@ api.download(
 
 # Different asset types require differing information to be uploaded
 # Optionally, you can:
-#   - tag the component provided the tag already exists
-#   - indicate the name of the local file to be uploaded (when it is different from filename)
+#   - tag the component, provided the tag already exists
+#   - specify a new component name to use when uploading into Nexus (instead of using the local file name)
 api.upload_maven_component(
   filename: MAVEN_FILENAME,
   group_id: GROUP_ID,
