@@ -62,6 +62,7 @@ api = NexusAPI::API.new(
   docker_pull_hostname: DOCKER_PULL_HOSTNAME,  # Optional
   docker_push_hostname: DOCKER_PUSH_HOSTNAME,  # Optional
   config: "team_configs/#{CONFIG_NAME}",       # Optional
+  protocol: "https",                           # Optional
 )
 # NOTE: All Docker commands will fail if the docker hostnames are not initialized
 
@@ -251,41 +252,49 @@ api.download(
 
 
 # Different asset types require differing information to be uploaded
-# Optionally, you can tag the component provided the tag already exists
+# Optionally, you can:
+#   - tag the component provided the tag already exists
+#   - indicate the name of the local file to be uploaded (when it is different from filename)
 api.upload_maven_component(
   filename: MAVEN_FILENAME,
   group_id: GROUP_ID,
   artifact_id: ARTIFACT_ID,
   version: VERSION,
   repository: REPOSITORY_NAME,
-  tag: TAG,                     # Optional
+  tag: TAG,                             # Optional
+  upstream_filename: UPSTREAM_FILENAME, # Optional
 )
 api.upload_npm_component(
   filename: NPM_FILENAME,
   repository: REPOSITORY_NAME,
-  tag: TAG,                     # Optional
+  tag: TAG,                             # Optional
+  upstream_filename: UPSTREAM_FILENAME, # Optional
 )
 api.upload_pypi_component(
   filename: PYPI_FILENAME,
   repository: REPOSITORY_NAME,
-  tag: TAG,                     # Optional
+  tag: TAG,                             # Optional
+  upstream_filename: UPSTREAM_FILENAME, # Optional
 )
 api.upload_raw_component(
   filename: NPM_FILENAME,
   directory: PATH_IN_NEXUS,
   repository: REPOSITORY_NAME,
-  tag: TAG,                     # Optional
+  tag: TAG,                             # Optional
+  upstream_filename: UPSTREAM_FILENAME, # Optional
 )
 api.upload_rubygems_component(
   filename: RUBYGEMS_FILENAME,
   repository: REPOSITORY_NAME,
-  tag: TAG,                     # Optional
+  tag: TAG,                             # Optional
+  upstream_filename: UPSTREAM_FILENAME, # Optional
 )
 api.upload_yum_component(
   filename: YUM_FILENAME,
   directory: PATH_IN_NEXUS,
   repository: REPOSITORY_NAME,
-  tag: TAG,                     # Optional
+  tag: TAG,                             # Optional
+  upstream_filename: UPSTREAM_FILENAME, # Optional
 )
 
 
