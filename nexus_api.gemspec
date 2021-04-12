@@ -26,10 +26,10 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'bundler', "~> 2"
   spec.add_runtime_dependency 'docker-api', "~> 1.34.2"
   spec.add_runtime_dependency 'dotenv', "~> 2.7.5"
-  spec.add_runtime_dependency 'pry', "~> 0.12.2"
-  spec.add_runtime_dependency 'rake', ">= 12.3.3"
+  spec.add_runtime_dependency 'pry', ">= 0.12.2", "<0.14"
+  spec.add_runtime_dependency 'rake', ">= 12.3.3", "<14.0"
   spec.add_runtime_dependency 'rest-client', "~> 2.1.0"
-  spec.add_runtime_dependency 'thor', "~> 0.20.3"
+  spec.add_runtime_dependency 'thor', ">= 0.20.3", "<2.0"
 
   spec.add_development_dependency 'rspec', "~> 3.0"
   spec.add_development_dependency 'simplecov', "~> 0.18"
