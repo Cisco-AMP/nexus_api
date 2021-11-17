@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
+  spec.add_runtime_dependency 'addressable', '~> 2.8.0'
   spec.add_runtime_dependency 'bundler', "~> 2"
   spec.add_runtime_dependency 'docker-api', "~> 1.34.2"
   spec.add_runtime_dependency 'dotenv', "~> 2.7.5"
