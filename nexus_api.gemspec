@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'addressable', '~> 2.8.0'
   spec.add_runtime_dependency 'bundler', "~> 2"
-  spec.add_runtime_dependency 'docker-api', "~> 1.34.2"
+  spec.add_runtime_dependency 'docker-api', "~> 2.2.0"
   spec.add_runtime_dependency 'dotenv', "~> 2.7.5"
   spec.add_runtime_dependency 'pry', ">= 0.12.2", "<0.14"
   spec.add_runtime_dependency 'rake', ">= 12.3.3", "<14.0"
