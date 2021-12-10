@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nexus_api (2.1.1)
+    nexus_api (2.1.2)
       addressable (~> 2.8.0)
       bundler (~> 2)
       docker-api (~> 2.2.0)
