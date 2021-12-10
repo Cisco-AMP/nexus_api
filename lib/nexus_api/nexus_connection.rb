@@ -1,12 +1,12 @@
 require 'base64'
 require 'json'
 require 'rest-client'
-require 'uri'
+require 'addressable/uri'
 
 module NexusAPI
   class NexusConnection
     VALID_RESPONSE_CODES = [200, 201, 204].freeze
-    
+
     attr_accessor :continuation_token
 
     def initialize(username:, password:, hostname:, protocol:)
@@ -27,7 +27,7 @@ module NexusAPI
 
     def post(endpoint:, parameters: '', headers: {'Content-Type' => 'application/json'}, api_version: 'v1')
       response = send_request(
-        :post, 
+        :post,
         endpoint,
         parameters: parameters,
         headers: headers,
@@ -59,7 +59,7 @@ module NexusAPI
 
     def head(asset_url:)
       catch_connection_error do
-        RestClient.head(URI.escape(asset_url))
+        RestClient.head(Addressable::URI.escape(asset_url))
       end
     end
 
@@ -71,7 +71,7 @@ module NexusAPI
 
     def download(url:)
       catch_connection_error do
-        RestClient.get(URI.escape(url), authorization_header)
+        RestClient.get(Addressable::URI.escape(url), authorization_header)
       end
     end
 
@@ -122,7 +122,7 @@ module NexusAPI
       catch_connection_error do
         RestClient::Request.execute(
           method:  connection_method,
-          url:     URI.escape(url),
+          url:     Addressable::URI.escape(url),
           payload: parameters,
           headers: authorization_header.merge(headers)
         )

@@ -4,7 +4,7 @@ RSpec.describe NexusAPI::NexusConnection do
   let(:endpoint) { 'endpoint' }
   let(:endpoint_with_arg) { 'endpoint?arg=first' }
   let(:raw_endpoint) { "!#3?/9.9.9-${val}.%^P&*" }
-  let(:escaped_endpoint) { URI.escape(raw_endpoint) }
+  let(:escaped_endpoint) { Addressable::URI.escape(raw_endpoint) }
   let(:custom_header) { {'header' => 'value'} }
   let(:token) { 'token' }
 
